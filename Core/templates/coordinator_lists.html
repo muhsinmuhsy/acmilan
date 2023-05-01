@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <style>
+        .table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 1rem;
+            border-collapse: collapse;
+        }
+
+        .table td,
+        .table th {
+            padding: .75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .table tbody + tbody {
+            border-top: 2px solid #dee2e6;
+        }
+
+        .table-responsive {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        @media (max-width: 575px) {
+            .table td,
+            .table th {
+                padding: .25rem .5rem;
+            }
+
+            .table thead th {
+                font-size: 14px;
+            }
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 575px) {
+            h2 {
+                font-size: 20px;
+            }
+        }
+
+        .btn-add {
+            margin: 7px;
+            float: right;
+        }
+
+        @media (max-width: 575px) {
+            h2 {
+                font-size: 20px;
+            }
+
+           
+            .table-responsive {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .table th,
+            .table td {
+                font-size: 14px;
+            }
+
+            .table thead th {
+                font-size: 12px;
+            }
+        }
+
+        th,
+        td {
+            text-align: center;
+        }
+
+        .cardstyle {
+            margin: 10px;
+        }
+
+    </style>
+    <body>
+        {% include 'header.html' %}
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <h2>COORDINATORS</h2>
+        <a href="{% url 'add_coordinator' %}" class="btn btn-primary shadow-md btn-add">Add New Coordinator</a>
+        <br>
+        <br>
+        <br>
+        <div class="card cardstyle">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table mb-0 table-striped">
+                        <thead>
+                            <tr>
+                                <th>SL NO</th>
+                                <th>NAME</th>
+                                <th>MOBILE NUMBER 1</th>
+                                <th>MOBILE NUMBER 2</th>
+                                <th>PLACE</th>
+                                <th>CENTERS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for coordinator in coordinators %}
+                                <tr>
+                                    <td>{{forloop.counter}}</td>
+                                    <td>{{ coordinator.user.first_name }} {{ coordinator.user.last_name }}</td>
+                                    <td>{{ coordinator.primary_mobile }}</td>
+                                    <td>{{ coordinator.secondary_mobile }}</td>
+                                    <td>{{coordinator.place}}</td>
+                                    <td>{{ coordinator.center1_name }}
+                                        <br>
+                                        {{ coordinator.center2_name }}
+                                    </td>
+                                    <td>
+                                        
+                                        <a  href="{% url 'edit_coordinator' coordinator.id %}" > 
+                                            <i style="font-size: 20px;color: black;" class='bx bxs-edit-alt'></i>
+                                        </a>
+                                        <a href="{% url 'delete_coordinator' coordinator.id %}">
+                                            <i style="font-size: 20px;color: red;" class="bx bxs-trash-alt"></i></a>
+                                        </a>
+                                    </td>
+                                </tr>   
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+    </body>
+{% endblock content %}

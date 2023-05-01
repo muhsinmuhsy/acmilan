@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <style>
+        .table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 1rem;
+            border-collapse: collapse;
+        }
+
+        .table td,
+        .table th {
+            padding: .75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .table tbody + tbody {
+            border-top: 2px solid #dee2e6;
+        }
+
+        .table-responsive {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        @media (max-width: 575px) {
+            .table td,
+            .table th {
+                padding: .25rem .5rem;
+            }
+
+            .table thead th {
+                font-size: 14px;
+            }
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 575px) {
+            h2 {
+                font-size: 20px;
+            }
+        }
+
+        .btn-add {
+            margin: 7px;
+            float: right;
+        }
+
+        @media (max-width: 575px) {
+            h2 {
+                font-size: 20px;
+            }
+
+           
+            .table-responsive {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .table th,
+            .table td {
+                font-size: 14px;
+            }
+
+            .table thead th {
+                font-size: 12px;
+            }
+        }
+
+        th,
+        td {
+            text-align: center;
+        }
+
+        .cardstyle {
+            margin: 10px;
+        }
+
+    </style>
+    <body>
+        {% include 'header.html' %}
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <h2>CENTERS</h2>
+        <a href="{% url 'center_add' %}" class="btn btn-primary shadow-md btn-add">Add New Center</a>
+        <br>
+        <br>
+        <br>
+        <div class="card cardstyle">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table mb-0 table-striped">
+                        <thead>
+                            <tr>
+                                <th>SL NO</th>
+                                <th>REF NO</th>
+                                <th>CENTER NAME</th>
+                                <th>LOCATION</th>
+                                <th>NUMBER OF STUDENTS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for center in centers %}
+                                <tr>
+                                    <td>{{forloop.counter}}</td>
+                                    <td>{{ center.ref_number }}</td>
+                                    <td>{{ center.name }}</td>
+                                    <td>{{ center.location }}</td>
+                                    <td>{{ center.student_count }}</td>
+                                    <td>
+                                        <a href="{% url 'center_student_list' center.id  %}" style="margin-left: 15px;">
+                                            <i style="font-size: 20px;color: blue;" class='bx bx-show'></i>
+                                        </a>
+                                        <a  href="{% url 'center_edit' center.id %}" > 
+                                            <i style="font-size: 20px;color: black;" class='bx bxs-edit-alt'></i>
+                                        </a>
+                                        <a href="{% url 'center_delete' center.id %}">
+                                            <i style="font-size: 20px;color: red;" class="bx bxs-trash-alt"></i></a>
+                                        </a>
+                                    </td>
+                                </tr>   
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+    </body>
+{% endblock content %}

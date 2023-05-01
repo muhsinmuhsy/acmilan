@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    {% include 'header.html' %}
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="card cardstyle">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table mb-0 table-striped">
+                    <thead>
+                        <tr>
+                            <th>Reference Number</th>
+                            <th>Student Name</th>
+                            <th>Guardian Name</th>
+                            <th>Contact Number</th>
+                            <th>Location</th>
+                            <th>Coordinator</th>
+                            <th>Lead Type</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for l in lead %}
+                        <tr>
+                            <td>{{ l.ref_no }}</td>
+                            <td>{{ l.student_name }}</td>
+                            <td>{{ l.guardian_name }}</td>
+                            <td>{{ l.contact_no }}</td>
+                            <td>{{ l.location }}</td>
+                            <td>{{ l.coordinator }}</td>
+                            <td>{{ l.lead_type }}</td>
+                            <td>
+                                <a href="{% url 'lead_view' lead_id=l.id %}" style="margin-left: 15px;">
+                                    <i style="font-size: 20px;color: blue;" class='bx bx-show'></i>
+                                </a>
+                                <a href="{% url 'delete_lead' lead_id=l.id %}">
+                                    <i style="font-size: 20px;color: red;" class="bx bxs-trash-alt"></i></a>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

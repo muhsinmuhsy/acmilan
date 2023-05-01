@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<body>
+  {% include 'header.html' %}
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  
+  <div class="container">
+    <h2 class="text-center my-5">Attendance Dates</h2>
+    <div class="d-flex justify-content-end mb-3">
+      <a href="{% url 'add_attendance' center_id=center.id batch_id=batch.id section_id=section.id %}" class="btn btn-primary shadow-md btn-add">Add Attendance</a>
+    </div>
+    <ul class="list-group">
+      {% for date in date_list %}
+        <li class="list-group-item text-center">
+          <a href="{% url 'attendance_detail' center_id=center.id batch_id=batch.id section_id=section.id date=date.date %}" style="color: black;">
+            {{ date.date|date:"F d, Y" }}
+          </a>
+        </li>
+      {% empty %}
+        <p>No attendance recorded yet.</p>
+      {% endfor %}
+    </ul>
+  </div>
+</body>
+{% endblock %}
+
+<!-- Add this CSS style below the code block -->
+
+<style>
+  /* Center the container */
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Style for the "Add Attendance" button */
+  .btn-add {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  /* Style for the attendance list */
+  .list-group-item {
+    font-size: 18px;
+  }
+
+  
+</style>

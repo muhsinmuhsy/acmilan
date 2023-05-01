@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <style>
+         @media(max-width: 575px)
+            {
+                .intro-y .box {
+                    width: 100%!important;
+                }
+            }
+    </style>
+    <body class="py-5">
+        {% include 'header.html' %}
+        <!-- BEGIN: Content -->
+
+    <div class="content">
+            <div class="flex items-center mt-8">
+        <!-- <h2 class="intro-y text-lg font-medium mr-auto">Add / Manage Category</h2> -->
+    </div>
+    <!-- BEGIN: Wizard Layout -->
+    
+        <div class="intro-y box py-10 sm:py-20 mt-5">
+            <h2 style=" font-size: 30px; font-weight: 500; text-align: center;
+                color:black;">Edit Section For <Strong style=" font-size: 30px; font-weight: 500; text-align: center;
+                color:red;">{{ center.name }}</Strong>
+            </h2>
+
+            <div class="px-5 sm:px-20 mt-10 pt-10 border-t border-slate-200/60 dark:border-darkmode-400">
+                
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="name" class="form-control" value="{{section.name}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="start_time">Start Time</label>
+                        <input type="time" name="start_time" id="start_time" class="form-control" value="{{ section.start_time|default_if_none:''|time:'H:i' }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="end_time">End Time</label>
+                        <input type="time" name="end_time" id="end_time" class="form-control" value="{{ section.end_time|default_if_none:''|time:'H:i' }}">
+                    </div>
+                    
+                    <br>
+                    <button type="submit" class="btn btn-primary">Uodate Time Section</button>
+                </form>
+            </div>
+        </div>
+        <style>
+            .dark-mode-switcher{
+                display: none;
+            } 
+             .sm\:py-20 {
+                padding-top: 5rem;
+                padding-bottom: 1rem;
+            }
+            .content {
+                min-height: 75vh;
+               
+            }
+        </style>
+            <!-- BEGIN: Dark Mode Switcher-->
+            <div data-url="top-menu-dark-regular-form.html" class="dark-mode-switcher cursor-pointer shadow-md fixed bottom-0 right-0 box border rounded-full w-40 h-12 flex items-center justify-center z-50 mb-10 mr-10">
+                <div class="mr-4 text-slate-600 dark:text-slate-200">Dark Mode</div>
+                <div class="dark-mode-switcher__toggle border"></div>
+            </div>
+            
+            <!-- END: Dark Mode Switcher-->
+    </body>
+{% endblock %}

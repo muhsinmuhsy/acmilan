@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <style>
+        .table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 1rem;
+            border-collapse: collapse;
+        }
+
+        .table td,
+        .table th {
+            padding: .75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .table tbody + tbody {
+            border-top: 2px solid #dee2e6;
+        }
+
+        .table-responsive {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        @media (max-width: 575px) {
+            .table td,
+            .table th {
+                padding: .25rem .5rem;
+            }
+
+            .table thead th {
+                font-size: 14px;
+            }
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 575px) {
+            h2 {
+                font-size: 20px;
+            }
+        }
+
+        .btn-add {
+            margin: 7px;
+            float: right;
+        }
+
+        @media (max-width: 575px) {
+            h2 {
+                font-size: 20px;
+            }
+
+           
+            .table-responsive {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .table th,
+            .table td {
+                font-size: 14px;
+            }
+
+            .table thead th {
+                font-size: 12px;
+            }
+        }
+
+        th,
+        td {
+            text-align: center;
+        }
+
+        .cardstyle {
+            margin: 10px;
+        }
+
+    </style>
+    <body>
+        {% include 'header.html' %}
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <h2>TIME SECTIONS</h2>
+        <h4>{{ batch.name }}</h4>
+        <a href="{% url 'add_time_section' center.id batch.id %}" class="btn btn-primary shadow-md btn-add">Add New Section</a>
+        <br>
+        <br>
+        <br>
+        <div class="card cardstyle">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table mb-0 table-striped">
+                        <thead>
+                            <tr>
+                                <th>SL NO</th>
+                                <th>SECTION NAME</th>
+                                <th>START TIME</th>
+                                <th>END TIME</th>
+                                <th>ADD ATTENDS</th>
+                                <th>ACTIONS</th>
+                         
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+                         
+                            {% for section in sections %}
+                                <tr>
+                                    <td>{{forloop.counter}}</td>
+                                    <td>{{ section.name }}</td>
+                                    <td>{{ section.start_time }}</td>
+                                    <td>{{ section.end_time }}</td>
+                                    <td> <a href="{% url 'attendance_date'  center_id=center.id batch_id=batch.id section_id=section.id %}" style="margin-left: 15px;">
+                                        <i class="bi bi-plus-lg">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16" style="color: blue;">
+                                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+                                              </svg>
+                                        </i>
+                                        </i></a>
+                                    </td>
+                                    <td>
+                                        <a  href="{% url 'update_time_section' center.id batch.id section.id %}" > 
+                                            <i style="font-size: 20px;color: black;" class='bx bxs-edit-alt'></i>
+                                        </a>
+    
+                                        <a href="{% url 'delete_section' center.id batch.id section.id %}">
+                                            <i style="font-size: 20px;color: red;" class="bx bxs-trash-alt"></i></a>
+                                        </a>
+                                    </td>
+                                </tr>   
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+    </body>
+{% endblock content %}

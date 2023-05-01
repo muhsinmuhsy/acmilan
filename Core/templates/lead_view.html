@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    {% include 'header.html' %}
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4>Lead Details</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead"><strong>Ref No:</strong> {{ lead.ref_no }}</p>
+                        <p><strong>Student Name:</strong> {{ lead.student_name }}</p>
+                        <p><strong>Guardian Name:</strong> {{ lead.guardian_name }}</p>
+                        <p><strong>Contact No:</strong> {{ lead.contact_no }}</p>
+                        <p><strong>Location:</strong> {{ lead.location }}</p>
+                        <p><strong>Coordinator:</strong> {{ lead.coordiantor }}</p>
+                        <p><strong>Lead Type:</strong> {{ lead.lead_type }}</p>
+                        <p><strong>Status:</strong> {{ lead.lead_status }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-secondary text-white">
+                        <h4>Actions</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="pending">
+                            <button type="submit" class="btn btn-warning btn-block">Mark as Pending</button>
+                        </form>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="update">
+                            <textarea name="comment" placeholder="Add a comment" class="form-control my-3"></textarea>
+                            <button type="submit" class="btn btn-primary btn-block">Add Comment</button>
+                        </form>
+
+                        {% if lead.comment %}
+                            <div class="card my-3">
+                                <div class="card-header bg-info text-white">
+                                    <h5>Comment:</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p>{{ lead.comment }}</p>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="reject">
+                            <button type="submit" class="btn btn-danger btn-block">Reject Lead</button>
+                        </form>
+
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="success">
+                            <button type="submit" class="btn btn-success btn-block">Mark as Success</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

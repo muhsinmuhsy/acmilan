@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <style>
+         @media(max-width: 575px)
+            {
+                .intro-y .box {
+                    width: 100%!important;
+                }
+            }
+    </style>
+    <body class="py-5">
+        {% include 'header.html' %}
+        <!-- BEGIN: Content -->
+        <br>
+        <br>    
+
+    <div class="content">
+            <div class="flex items-center mt-8">
+        <!-- <h2 class="intro-y text-lg font-medium mr-auto">Add / Manage Category</h2> -->
+    </div>
+    <!-- BEGIN: Wizard Layout -->
+    <div class="intro-y box py-10 sm:py-20 mt-5">
+        <h2 style=" font-size: 30px; font-weight: 500; text-align: center;
+        color:black;">EDIT COORDINATORS</h2>
+        {% if message %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endif %}
+        <div class="px-5 sm:px-20 mt-10 pt-10 border-t border-slate-200/60 dark:border-darkmode-400">
+            <form method="post" action="{% url 'edit_coordinator' coordinator.id %}">
+                {% csrf_token %}
+                <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" name="username" id="username" class="form-control" value="{{ coordinator.user.username }}" required>
+                </div>
+                <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" class="form-control" value="{{ coordinator.user.email }}" required>
+                </div>
+                
+                <div class="form-group">
+                <label for="first_name">First Name:</label>
+                <input type="text" name="first_name" id="first_name" class="form-control" value="{{ coordinator.user.first_name }}" required>
+                </div>
+                <div class="form-group">
+                <label for="last_name">Last Name:</label>
+                <input type="text" name="last_name" id="last_name" class="form-control" value="{{ coordinator.user.last_name }}" required>
+                </div>
+                <div class="form-group">
+                <label for="center1">Primary Center:</label>
+                <select name="center1" id="center1" class="form-control" required>
+                    {% for center in centers %}
+                    <option value="{{ center.id }}" {% if center.id == coordinator.centers.first.id %}selected{% endif %}>{{ center.name }}</option>
+                    {% endfor %}
+                </select>
+                </div>
+                <div class="form-group">
+                <label for="center2">Secondary Center:</label>
+                <select name="center2" id="center2" class="form-control" required>
+                    {% for center in centers %}
+                    <option value="{{ center.id }}" {% if center.id == coordinator.centers.last.id %}selected{% endif %}>{{ center.name }}</option>
+                    {% endfor %}
+                </select>
+                </div>
+                <div class="form-group">
+                <label for="primary_mobile">Primary Mobile:</label>
+                <input type="text" name="primary_mobile" id="primary_mobile" class="form-control" value="{{ coordinator.primary_mobile }}" required>
+                </div>
+                <div class="form-group">
+                <label for="secondary_mobile">Secondary Mobile:</label>
+                <input type="text" name="secondary_mobile" id="secondary_mobile" class="form-control" value="{{ coordinator.secondary_mobile }}" required>
+                </div>
+                <div class="form-group">
+                <label for="place">Place:</label>
+                <input type="text" name="place" id="place" class="form-control" value="{{ coordinator.place }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" id="password" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

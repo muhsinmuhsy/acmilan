@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <style>
+         @media(max-width: 575px)
+            {
+                .intro-y .box {
+                    width: 100%!important;
+                }
+            }
+    </style>
+    <body class="py-5">
+        {% include 'header.html' %}
+        <!-- BEGIN: Content -->
+    <div class="content">
+            <div class="flex items-center mt-8">
+        <!-- <h2 class="intro-y text-lg font-medium mr-auto">Add / Manage Category</h2> -->
+    </div>
+    <!-- BEGIN: Wizard Layout -->
+    <div class="intro-y box py-10 sm:py-20 mt-5">
+        <h2 style=" font-size: 30px; font-weight: 500; text-align: center;
+        color: black;">Edit Center</h2>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-danger" role="alert">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    
+        
+        <div class="px-5 sm:px-20 mt-10 pt-10 border-t border-slate-200/60 dark:border-darkmode-400">
+            <!-- <div class="font-medium text-base">Add / Manage Products</div> -->
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5">
+                    
+                    <div class="intro-y col-span-12 sm:col-span-6">
+                        <label for="input-wizard-4" class="form-label">Reference Number</label>
+                        <input id="input-wizard-2" type="text" name="ref_number" required class="form-control" placeholder="Enter Reference Number here" value="{{ center.ref_number }}">
+                    </div>
+
+                    <div class="intro-y col-span-12 sm:col-span-6">
+                        <label for="input-wizard-2" class="form-label">Center Name</label>
+                        <input id="input-wizard-2" type="text" name="name" required class="form-control" placeholder="Enter center Name here" value="{{ center.name }}">
+                    </div>
+
+                    <div class="intro-y col-span-12 sm:col-span-6">
+                        <label for="input-wizard-2" class="form-label">Center Location</label>
+                        <input id="input-wizard-2" type="text" name="location" required class="form-control" placeholder="Enter center Location here" value="{{ center.location }}">
+                    </div>
+
+                    <div class="intro-y col-span-12 sm:col-span-6">
+                        <label for="input-wizard-2" class="form-label">Address</label>
+                        <input id="input-wizard-2" type="text" name="address" required class="form-control" placeholder="Enter center address here" value="{{ center.address }}">
+                    </div>
+                    
+                    <div class="intro-y col-span-12 flex items-center justify-center sm:justify-end mt-5">
+                        <!-- <button class="btn btn-secondary w-24">Add</button> -->
+                        <button class="btn btn-primary w-24 ml-2" type="submit">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- END: Wizard Layout -->
+    </div>
+    <!-- END: Content -->
+    <style>
+        .dark-mode-switcher{
+            display: none;
+        } 
+         .sm\:py-20 {
+            padding-top: 5rem;
+            padding-bottom: 1rem;
+        }
+        .content {
+            min-height: 75vh;
+           
+        }
+    </style>
+    
+    </body>
+{% endblock content %}
