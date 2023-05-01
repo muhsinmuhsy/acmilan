@@ -65,7 +65,7 @@ def add_coordinator(request):
         place = request.POST['place']
         
         try:
-            user = User.objects.create_user(username=username, email=email, password=password, first_name=first_name, last_name=last_name)
+            user = User.objects.create_user(username=username, email=email, password=password, first_name=first_name, last_name=last_name, is_staff=True)
             center1 = get_object_or_404(Center, id=center1_id)
             center2 = get_object_or_404(Center, id=center2_id)
             coordinator = Coordinator.objects.create(user=user, primary_mobile=primary_mobile, secondary_mobile=secondary_mobile, place=place)
