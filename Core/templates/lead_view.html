@@ -41,27 +41,27 @@
                         <form method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="action" value="update">
-                            <textarea name="comment" placeholder="Add a comment" class="form-control my-3"></textarea>
-                            <button type="submit" class="btn btn-primary btn-block">Add Comment</button>
+                            <textarea name="comment" placeholder="Write here.." class="form-control my-3"></textarea>
+                            <button type="submit" class="btn btn-primary btn-block">Update</button>
                         </form>
 
                         {% if lead.comment %}
                             <div class="card my-3">
                                 <div class="card-header bg-info text-white">
-                                    <h5>Comment:</h5>
+                                    <h5>Updates:</h5>
                                 </div>
                                 <div class="card-body">
                                     <p>{{ lead.comment }}</p>
                                 </div>
                             </div>
                         {% endif %}
-
+                        <br>
                         <form method="post">
                             {% csrf_token %}
                             <input type="hidden" name="action" value="reject">
                             <button type="submit" class="btn btn-danger btn-block">Reject Lead</button>
                         </form>
-
+                        <br>
                         <form method="post">
                             {% csrf_token %}
                             <input type="hidden" name="action" value="success">

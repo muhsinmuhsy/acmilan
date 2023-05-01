@@ -28,9 +28,9 @@ def login_view(request):
         error = None
     return render(request, 'login.html', {'error': error})
 
-def logout(request):
+def logout_view(request):
     logout(request)
-    return redirect('home')
+    return redirect('dashbord')
 
 # ------------------------------------- Index --------------------------------------------------- #
 
@@ -471,6 +471,17 @@ def attendance_date(request, center_id, batch_id, section_id):
     return render(request, 'attendance_date.html', context)
 
 @login_required 
+def delete_attendance_date(request, center_id, batch_id, section_id, date):
+    center = Center.objects.get(pk=center_id)
+    batch = Batch.objects.get(pk=batch_id)
+    section = TimeSection.objects.get(pk=section_id)
+    attendance_list = Attendance.objects.filter(time_section=section, date=date)
+    attendance_list.delete()
+
+    return redirect('attendance_date', center_id=center_id, batch_id=batch_id, section_id=section_id)
+
+
+@login_required 
 def add_attendance(request, center_id, batch_id, section_id):
     center = Center.objects.get(pk=center_id)
     batch = Batch.objects.get(pk=batch_id)
@@ -503,35 +514,36 @@ def add_attendance(request, center_id, batch_id, section_id):
     }
     return render(request, 'add_attendance.html', context)
 
-@login_required     
-def edit_attendance(request, center_id, section_id, attendance_id):
-    center = Center.objects.get(pk=center_id)
-    section = TimeSection.objects.get(pk=section_id)
-    attendance = Attendance.objects.get(pk=attendance_id)
+# @login_required     
+# def edit_attendance(request, center_id, section_id, attendance_id):
+#     center = Center.objects.get(pk=center_id)
+#     section = TimeSection.objects.get(pk=section_id)
+#     attendance = Attendance.objects.get(pk=attendance_id)
 
-    if request.method == 'POST':
-        students_selected = request.POST.getlist('student')
-        date = datetime.strptime(request.POST.get('date'), '%Y-%m-%d').date()
+#     if request.method == 'POST':
+#         students_selected = request.POST.getlist('student')
+#         date = datetime.strptime(request.POST.get('date'), '%Y-%m-%d').date()
 
-        attendance.date = date
-        attendance.student.clear()
-        for student_id in students_selected:
-            student = Student.objects.get(pk=student_id)
-            attendance.student.add(student)
+#         attendance.date = date
+#         attendance.student.clear()
+#         for student_id in students_selected:
+#             student = Student.objects.get(pk=student_id)
+#             attendance.student.add(student)
 
-        attendance.save()
-        return redirect('attendance_detail', center_id=center.id, section_id=section.id, attendance_id=attendance.id)
+#         attendance.save()
+#         return redirect('attendance_detail', center_id=center.id, section_id=section.id, attendance_id=attendance.id)
 
-    else:
-        students = Student.objects.filter(center=center)
-        context = {
-            'center': center,
-            'section': section,
-            'students': students,
-            'attendance': attendance
-        }
+#     else:
+#         students = Student.objects.filter(center=center)
+#         context = {
+#             'center': center,
+#             'section': section,
+#             'students': students,
+#             'attendance': attendance
+#         }
 
-        return render(request, 'edit_attendance.html', context)
+#         return render(request, 'edit_attendance.html', context)
+
 
 @login_required 
 def attendance_detail(request, center_id, batch_id, section_id, date):
@@ -552,11 +564,7 @@ def attendance_detail(request, center_id, batch_id, section_id, date):
 
     return render(request, 'attendance_detail.html', context)
 
-@login_required 
-def delete_attendance(request, center_id, section_id, attendance_id):
-    attendance = Attendance.objects.get(pk=attendance_id)
-    attendance.delete()
-    return redirect('attendance_date', center_id=center_id, section_id=section_id)
+
 
 
 

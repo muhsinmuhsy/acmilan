@@ -16,10 +16,14 @@
     </div>
     <ul class="list-group">
       {% for date in date_list %}
-        <li class="list-group-item text-center">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
           <a href="{% url 'attendance_detail' center_id=center.id batch_id=batch.id section_id=section.id date=date.date %}" style="color: black;">
             {{ date.date|date:"F d, Y" }}
           </a>
+          <form action="{% url 'delete_attendance_date' center_id=center.id batch_id=batch.id section_id=section.id date=date.date %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this?')">Delete</button>
+          </form>
         </li>
       {% empty %}
         <p>No attendance recorded yet.</p>
@@ -48,6 +52,5 @@
   .list-group-item {
     font-size: 18px;
   }
-
   
 </style>

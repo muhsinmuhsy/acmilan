@@ -7,7 +7,7 @@ urlpatterns = [
     # ------------------------------------------- Auth --------------------------------------------------------- #
     
     path('login/', views.login_view, name='login'),
-    path('logout/', views.logout, name='logout'),
+    path('logout/', views.logout_view, name='logout'),
 
     # ------------------------------------------- Index --------------------------------------------------------- #
 
@@ -60,8 +60,9 @@ urlpatterns = [
 
     # Attends
     path('attendance_date/<int:center_id>/<int:batch_id>/<int:section_id>/', views.attendance_date, name='attendance_date'),
+    path('attendance_date/<int:center_id>/<int:batch_id>/<int:section_id>/<str:date>/delete/', views.delete_attendance_date, name='delete_attendance_date'),
     path('centers/<int:center_id>/timesections/<int:batch_id>/<int:section_id>/addattendance/', views.add_attendance, name='add_attendance'),
-    path('center/<int:center_id>/section/<int:section_id>/attendance/<int:attendance_id>/edit/', views.edit_attendance, name='edit_attendance'),    
+    # path('center/<int:center_id>/section/<int:section_id>/attendance/<int:attendance_id>/edit/', views.edit_attendance, name='edit_attendance'),      
     path('center/<int:center_id>/batch/<int:batch_id>/<int:section_id>/attendance-date/<str:date>/', views.attendance_detail, name='attendance_detail'),
     
     
