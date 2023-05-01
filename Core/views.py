@@ -10,6 +10,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
+from django.db.models import Prefetch
 
 # Create your models here.
 
@@ -135,7 +136,11 @@ def delete_coordinator(request, coordinator_id):
 
 @login_required 
 def center_list(request):
-    centers = Center.objects.annotate(student_count=Count('student'))
+    if request.user.is_superuser:
+        centers = Center.objects.annotate(student_count=Count('student'))
+    else:
+        coordinator = Coordinator.objects.get(user=request.user)
+        centers = coordinator.centers.all()
     return render(request, 'center_list.html', {'centers': centers})
 
 @login_required 
