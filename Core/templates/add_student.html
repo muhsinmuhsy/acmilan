@@ -1,82 +1,116 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Add Student</h2>
-  {% if message %}
-    <div class="alert alert-danger" role="alert">
-      {{ message }}
-    </div>
-  {% endif %}
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="hidden" name="center" value="{{ center.id }}">
-    <label for="ref_number">Ref Number:</label>
-    <input type="text" name="ref_number" required>
-    <br>
-    <label for="full_name">Full Name:</label>
-    <input type="text" name="full_name" required>
-    <br>
-    <label for="city">City:</label>
-    <input type="text" name="city" required>
-    <br>
-    <label for="zipcode">Zip Code:</label>
-    <input type="text" name="zipcode" required>
-    <br>
-    <label for="email">Email:</label>
-    <input type="email" name="email" required>
-    <br>
-    <label for="date_of_birth">Date of Birth:</label>
-    <input type="date" name="date_of_birth" required>
-    <br>
-    <label for="preferred_location">Preferred Location:</label>
-    <input type="text" name="preferred_location" required>
-    <br>
-    <label for="street_address">Street Address:</label>
-    <input type="text" name="street_address" required>
-    <br>
-    <label for="state">State:</label>
-    <input type="text" name="state" required>
-    <br>
-    <label for="phone_number">Phone Number:</label>
-    <input type="text" name="phone_number" required>
-    <br>
-    <label for="guardian_name">Guardian Name:</label>
-    <input type="text" name="guardian_name" required>
-    <br>
-    <label for="guardian_phone_number">Guardian Phone Number:</label>
-    <input type="text" name="guardian_phone_number" required>
-    <br>
-    <label for="id_proof">ID Proof:</label>
-    <input type="file" name="id_proof" required>
-    <br>
-    <label for="age_group">Age Group:</label>
-    <input type="text" name="age_group" required>
-    <br>
-    <label for="mode_of_travel">Mode of Travel:</label>
-    <input type="text" name="mode_of_travel" required>
-    <br>
-    <label for="football_playing_position">Football Playing Position:</label>
-    <input type="text" name="football_playing_position" required>
-    <br>
-    <label for="school_Name">School Name:</label>
-    <input type="text" name="school_Name">
-    <br>
-    <label for="school_Address">School Address:</label>
-    <input type="text" name="school_Address">
-    <br>
-    <label for="study_Standard">Study Standard:</label>
-    <input type="number" name="study_Standard">
-    <br>
-    <label for="study_Devision">Study Devision:</label>
-    <input type="text" name="study_Devision">
-    <br>
-    <label for="batch">Batch:</label>
-    <select name="batch">
-      {% for batch in batches %}
-        <option value="{{ batch.id }}">{{ batch.name }}</option>
-      {% endfor %}
-    </select>
-    <br>
-    <input type="submit" value="Submit">
-  </form>
-{% endblock %}
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-md-8 mx-auto">
+        <div class="card">
+          <div class="card-header">
+            <h2>Add Student</h2>
+          </div>
+          <div class="card-body">
+            {% if message %}
+              <div class="alert alert-danger" role="alert">
+                {{ message }}
+              </div>
+            {% endif %}
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type="hidden" name="center" value="{{ center.id }}">
+              <div class="form-group">
+                <label for="ref_number">Ref Number:</label>
+                <input type="text" name="ref_number" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="full_name">Full Name:</label>
+                <input type="text" name="full_name" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="city">City:</label>
+                <input type="text" name="city" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="zipcode">Zip Code:</label>
+                <input type="text" name="zipcode" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" name="email" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="date_of_birth">Date of Birth:</label>
+                <input type="date" name="date_of_birth" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="preferred_location">Preferred Location:</label>
+                <input type="text" name="preferred_location" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="street_address">Street Address:</label>
+                <input type="text" name="street_address" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="state">State:</label>
+                <input type="text" name="state" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="phone_number">Phone Number:</label>
+                <input type="text" name="phone_number" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="guardian_name">Guardian Name:</label>
+                <input type="text" name="guardian_name" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="guardian_phone_number">Guardian Phone Number:</label>
+                <input type="text" name="guardian_phone_number" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="id_proof">ID Proof:</label>
+                <input type="file" name="id_proof" class="form-control-file" required>
+              </div>
+              <div class="form-group">
+                <label for="age_group">Age Group:</label>
+                <input type="text" name="age_group" class="form-control-file" required>
+              </div>
+              <div class="form-group">
+                <label for="mode_of_travel">Mode of Travel:</label>
+                <input type="text" name="mode_of_travel" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="football_playing_position">Football Playing Position:</label>
+                <input type="text" name="football_playing_position" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="school_Name">School Name:</label>
+                <input type="text" name="school_Name" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="school_Address">School Address:</label>
+                <input type="text" name="school_Address" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="study_Standard">Study Standard:</label>
+                <input type="number" name="study_Standard" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="study_Devision">Study Devision:</label>
+                <input type="text" name="study_Devision" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="batch">Batch:</label>
+                <select name="batch" class="form-control">
+                  {% for batch in batches %}
+                    <option value="{{ batch.id }}">{{ batch.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+       </div>
+     </div>
+   </div>
+  </div>
+  
+          {% endblock %}
