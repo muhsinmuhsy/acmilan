@@ -349,6 +349,7 @@
 								<li><a class="dropdown-item" href="{% url 'dashbord' %}"><i class='bx bx-pie-chart-alt' ></i>Default</a></li>
 								</ul>
 							</li>
+							{% if request.user.is_superuser %}
 							<li class="nav-item dropdown">
 								<a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="javascript:;" data-bs-toggle="dropdown">
 									<div class="parent-icon"><i class='bx bx-cube'></i>
@@ -363,6 +364,7 @@
 								
 								</ul>
 							</li>
+							{% endif %}
 							<li class="nav-item dropdown">
 								<a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="javascript:;" data-bs-toggle="dropdown">
 									<div class="parent-icon"><i class='bx bx-message-square-edit'></i>
