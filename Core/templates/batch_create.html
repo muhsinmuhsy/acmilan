@@ -1,17 +1,42 @@
-<!-- batch_create.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'header.html' %}
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<h3 class="text-center mb-4">Create Batch</h3>
 
-<h1>Create Batch</h1>
 <form method="post">
     {% csrf_token %}
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required>
+
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+
+    <div class="form-group">
+        <label for="center">Center:</label>
+        <select class="form-control" id="center" name="center">
+        {% for center in centers %}
+            <option value="{{ center.id }}">{{ center.name }}</option>
+        {% endfor %}
+        </select>
+    </div>
     <br>
-    <label for="center">Center:</label>
-    <select id="center" name="center">
-    {% for center in centers %}
-        <option value="{{ center.id }}">{{ center.name }}</option>
-    {% endfor %}
-    </select>
-    <br>
-    <button type="submit">Create</button>
+
+    <button type="submit" class="btn btn-primary">Create</button>
 </form>
+
+<!-- CSS -->
+<style>
+  form {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+</style>
+
+{% endblock %}

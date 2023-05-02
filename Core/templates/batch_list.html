@@ -1,18 +1,43 @@
-<!-- batch_list.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'header.html' %}
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<!-- HTML -->
 
-<h1>Batch List</h1>
-<ul>
-{% for batch in batches %}
-    <li>
-        {{ batch.name }} - {{ batch.center.name }}
-        <form method="post" action="{% url 'batch-delete' batch.pk %}">
-            {% csrf_token %}
-            <button type="submit">Delete</button>
-        </form>
+<h3 class="text-center">Batch List</h3>
+<a href="{% url 'batch-create' %}" class="btn btn-primary mt-3">Add Batch</a>
+<br>
+<br>
+<ul class="list-group">
+  {% for batch in batches %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      {{ batch.name }} - {{ batch.center.name }}
+      <form method="post" action="{% url 'batch-delete' batch.pk %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete?')">Delete</button>
+      </form>
     </li>
-{% empty %}
-    <li>No batches yet.</li>
-{% endfor %}
+  {% empty %}
+    <li class="list-group-item">No batches yet.</li>
+  {% endfor %}
 </ul>
 
-<a href="{% url 'batch-create' %}">Add Batch</a>
+
+
+<!-- CSS -->
+<style>
+  ul.list-group li {
+    margin-bottom: 10px;
+  }
+  .text-center {
+    text-align: center;
+  }
+</style>
+
+{% endblock %}

@@ -685,7 +685,7 @@ def coach_list(request):
     coaches = Coach.objects.all()
     return render(request, 'coach_list.html', {'coaches': coaches})
 
-# --------------------------------- batches ---------------------------------------------------------- #
+# --------------------------------- Batches ---------------------------------------------------------- #
 
 def batch_list(request):
     batches = Batch.objects.all()
