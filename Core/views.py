@@ -10,7 +10,11 @@ from django.contrib import messages
 from django.http import JsonResponse
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
+<<<<<<< HEAD
 from django.core.exceptions import ObjectDoesNotExist
+=======
+from django.db.models import Prefetch
+>>>>>>> e84d1ebd5181819616bf3f69b08c1c6ee7b707e1
 
 # Create your models here.
 
@@ -146,12 +150,19 @@ def delete_coordinator(request, coordinator_id):
 @login_required
 def center_list(request):
     if request.user.is_superuser:
+<<<<<<< HEAD
         # if user is a superuser, show all centers
         centers = Center.objects.annotate(student_count=Count('student'))
     else:
         # if user is a coordinator, show only their associated centers
         coordinator = request.user.coordinator
         centers = coordinator.centers.annotate(student_count=Count('student'))
+=======
+        centers = Center.objects.annotate(student_count=Count('student'))
+    else:
+        coordinator = Coordinator.objects.get(user=request.user)
+        centers = coordinator.centers.all()
+>>>>>>> e84d1ebd5181819616bf3f69b08c1c6ee7b707e1
     return render(request, 'center_list.html', {'centers': centers})
 
 @login_required 
