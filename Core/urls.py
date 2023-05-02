@@ -44,6 +44,8 @@ urlpatterns = [
     path('delete-student/<int:student_id>/', views.delete_student, name='delete_student'),
     path('view-student/<int:student_id>/', views.view_student, name='view_student'),
 
+    path('students/<int:student_id>/payments/<int:payment_id>/delete/', views.delete_payment, name='delete-payment'),
+
     # ------------------------------------------ Attendance ------------------------------------------------------- #
 
     # Centers
@@ -65,8 +67,19 @@ urlpatterns = [
     # path('center/<int:center_id>/section/<int:section_id>/attendance/<int:attendance_id>/edit/', views.edit_attendance, name='edit_attendance'),      
     path('center/<int:center_id>/batch/<int:batch_id>/<int:section_id>/attendance-date/<str:date>/', views.attendance_detail, name='attendance_detail'),
     
+    # -------------------------------------------- coach ----------------------------------------------------#
+
+    path('coaches/', views.coach_list, name='coach_list'),
+    path('coaches/add/', views.add_coach, name='add_coach'),
+    path('coaches/<int:pk>/', views.coach_detail, name='coach_detail'),
+    path('coaches/<int:pk>/delete/', views.delete_coach, name='delete_coach'),
+
+    # -------------------------------------- Batches -------------------------------------------------------- #
     
-    
+    path('batches/', views.batch_list, name='batch-list'),
+    path('batches/create/', views.batch_create, name='batch-create'),
+    path('batches/<int:pk>/delete/', views.batch_delete, name='batch-delete'),
+
 ]
 
 

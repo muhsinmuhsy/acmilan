@@ -1,0 +1,18 @@
+<!-- batch_list.html -->
+
+<h1>Batch List</h1>
+<ul>
+{% for batch in batches %}
+    <li>
+        {{ batch.name }} - {{ batch.center.name }}
+        <form method="post" action="{% url 'batch-delete' batch.pk %}">
+            {% csrf_token %}
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+{% empty %}
+    <li>No batches yet.</li>
+{% endfor %}
+</ul>
+
+<a href="{% url 'batch-create' %}">Add Batch</a>

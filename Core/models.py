@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-# --------------------------------- Centers ---------------------------------------- #
+# --------------------------------- Centers ------------------------------------------ #
 
 class Center(models.Model):
     ref_number = models.CharField(max_length=10, unique=True)
@@ -24,7 +24,7 @@ class Batch(models.Model):
     def __str__(self):
         return self.name
 
-#-----------------------------------------------Students -----------------------------------------#
+#-----------------------------------------------Students ---------------------------------------- #
 
 class Student(models.Model):
     ref_number = models.CharField(max_length=10, unique=True)
@@ -77,7 +77,20 @@ class Coordinator(models.Model):
         except IndexError:
             return ""
 
-# ----------------------------------- Leads ------------------------------------#
+# ----------------------------------- Coach ------------------------------------------------------------------ #
+
+class Coach(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    primary_mobile = models.CharField(max_length=20)
+    secondary_mobile = models.CharField(max_length=20)
+    place = models.CharField(max_length=100)
+    years_of_experience = models.PositiveIntegerField()
+    center = models.ForeignKey(Center, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name}"
+
+# ----------------------------------------------- Leads ------------------------------------#
 
 class Lead(models.Model):
     LEAD_TYPES = (
@@ -123,3 +136,10 @@ class Attendance(models.Model):
     date = models.DateField()
     Attandance = models.CharField(max_length=15,default='Absent')
 
+# --------------------------------------- Payment --------------------------------------------------------- #    
+
+class Payment(models.Model):
+    student = models.ForeignKey(Student,on_delete=models.CASCADE)
+    date = models.DateField(null=True)
+    amount = models.FloatField(null=True)
+    description = models.TextField(null=True)

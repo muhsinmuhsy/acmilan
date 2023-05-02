@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Add Coach</h1>
+  <form method="POST">
+    {% csrf_token %}
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required class="form-control" >
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required class="form-control" >
+    
+    <label for="first_name">First Name:</label>
+    <input type="text" id="first_name" name="first_name" required class="form-control" >
+
+    <label for="last_name">Last Name:</label>
+    <input type="text" id="last_name" name="last_name" required class="form-control" >
+
+    <label for="primary_mobile">Primary Mobile:</label>
+    <input type="text" name="primary_mobile" required>
+    <br>
+    <label for="secondary_mobile">Secondary Mobile:</label>
+    <input type="text" name="secondary_mobile" required>
+    <br>
+    <label for="place">Place:</label>
+    <input type="text" name="place" required>
+    <br>
+    <label for="years_of_experience">Years of Experience:</label>
+    <input type="number" name="years_of_experience" required>
+    <br>
+    <label for="center_id">Center:</label>
+    <select name="center_id" required>
+      {% for center in centers %}
+        <option value="{{ center.id }}">{{ center.name }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required class="form-control">
+    <br>
+    <input type="submit" value="Save">
+  </form>
+{% endblock %}

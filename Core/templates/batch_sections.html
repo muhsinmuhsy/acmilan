@@ -95,7 +95,11 @@
 
     </style>
     <body>
-        {% include 'header.html' %}
+        {% if request.user.is_authenticated %}
+        {% if request.user.is_superuser or request.user.coordinator %}
+            {% include 'header.html' %}
+        {% endif %}
+        {% endif %}
         <br>
         <br>
         <br>

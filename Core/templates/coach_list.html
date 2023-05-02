@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'header.html' %}
+<div class="container-fluid">
+  <br>
+  <br>
+  <br>
+
+  <h1 class="text-center">Coaches</h1>
+  <a href="{% url 'add_coach' %}" class="btn btn-primary mt-3" >Add Coach</a>
+  <br>
+  <br>
+  <ul class="list-group">
+    {% for coach in coaches %}
+      <li class="list-group-item"><a href="{% url 'coach_detail' coach.id %}">{{ coach.user.first_name }} {{ coach.user.last_name }}</a></li>
+    {% empty %}
+      <li class="list-group-item">No coaches yet.</li>
+    {% endfor %}
+  </ul>
+  
+</div>
+
+{% endblock %}
+
+<!-- Custom CSS -->
+<style>
+  .container-fluid {
+    background-color: #F8F9FA;
+  }
+
+  h1 {
+    font-size: 3rem;
+    font-weight: bold;
+  }
+
+  li {
+    font-size: 1.5rem;
+  }
+
+  a:hover {
+    text-decoration: none;
+  }
+</style>
+
+<!-- Bootstrap CSS -->
+

@@ -17,7 +17,11 @@
         }
     </style>
     <body class="py-5">
-        {% include 'header.html' %}
+        {% if request.user.is_authenticated %}
+            {% if request.user.is_superuser or request.user.coordinator %}
+                {% include 'header.html' %}
+            {% endif %}
+        {% endif %}
         <!-- BEGIN: Content -->
     <br>
     <br>
@@ -37,7 +41,14 @@
             <h6>
                 Section:{{ section }}
             </h6>
-            
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
             <!-- <div class="font-medium text-base">Add / Manage Products</div> -->
             <form action="" method="post">
                 {% csrf_token %}
@@ -86,6 +97,31 @@
             min-height: 75vh;
            
         }
+        
+        .messages {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .messages li {
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .messages li.error {
+            background-color: #ffaaaa;
+        }
+
+        .messages li.success {
+            background-color: #aaffaa;
+        }
+
+        .messages li.warning {
+            background-color: #e06d6d;
+        }
+
     </style>
       
     </body>

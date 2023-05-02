@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
+{% include 'header.html' %}
+<br>
+<br>
+<br><br>
+<br>
+
+
   <div class="container mt-4">
     <div class="row">
       <div class="col-md-8 mx-auto">
@@ -65,13 +72,15 @@
                 <label for="guardian_phone_number">Guardian Phone Number:</label>
                 <input type="text" name="guardian_phone_number" class="form-control" required>
               </div>
+              <br>
               <div class="form-group">
                 <label for="id_proof">ID Proof:</label>
                 <input type="file" name="id_proof" class="form-control-file" required>
               </div>
+              <br>
               <div class="form-group">
-                <label for="age_group">Age Group:</label>
-                <input type="text" name="age_group" class="form-control-file" required>
+                <label for="age_group">Age:</label>
+                <input type="text" name="age_group" class="form-control" required>
               </div>
               <div class="form-group">
                 <label for="mode_of_travel">Mode of Travel:</label>
@@ -83,23 +92,23 @@
               </div>
               <div class="form-group">
                 <label for="school_Name">School Name:</label>
-                <input type="text" name="school_Name" class="form-control">
+                <input type="text" name="school_Name" class="form-control" required>
               </div>
               <div class="form-group">
                 <label for="school_Address">School Address:</label>
-                <input type="text" name="school_Address" class="form-control">
+                <input type="text" name="school_Address" class="form-control" required>
               </div>
               <div class="form-group">
                 <label for="study_Standard">Study Standard:</label>
-                <input type="number" name="study_Standard" class="form-control">
+                <input type="number" name="study_Standard" class="form-control" required>
               </div>
               <div class="form-group">
                 <label for="study_Devision">Study Devision:</label>
-                <input type="text" name="study_Devision" class="form-control">
+                <input type="text" name="study_Devision" class="form-control" required>
               </div>
               <div class="form-group">
                 <label for="batch">Batch:</label>
-                <select name="batch" class="form-control">
+                <select name="batch" class="form-control" required>
                   {% for batch in batches %}
                     <option value="{{ batch.id }}">{{ batch.name }}</option>
                   {% endfor %}
@@ -113,4 +122,4 @@
    </div>
   </div>
   
-          {% endblock %}
+{% endblock %}

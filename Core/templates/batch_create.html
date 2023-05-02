@@ -1,0 +1,17 @@
+<!-- batch_create.html -->
+
+<h1>Create Batch</h1>
+<form method="post">
+    {% csrf_token %}
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+    <br>
+    <label for="center">Center:</label>
+    <select id="center" name="center">
+    {% for center in centers %}
+        <option value="{{ center.id }}">{{ center.name }}</option>
+    {% endfor %}
+    </select>
+    <br>
+    <button type="submit">Create</button>
+</form>

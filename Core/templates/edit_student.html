@@ -79,11 +79,10 @@
           <br>
 
           <label for="age_group">Age Group:</label>
-          <select name="age_group" id="age_group" value="{{ student.age_group }}" required class="form-control">
-              <option value="{{ student.age_group }}">{{ student.age_group }}</option>
-                      <option value="4-13">4-13</option>
-                      <option value="14-17">14-17</option>
-          </select>
+          <input type="text" name="age_group" id="age_group" value="{{ student.age_group }}" required class="form-control">
+          
+                      
+         
                   <br>
 
           <label for="mode_of_travel">Mode of Travel:</label>

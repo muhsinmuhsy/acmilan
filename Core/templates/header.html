@@ -300,15 +300,11 @@
 						<a class="d-flex align-items-center nav-link dropdown-toggle gap-3 dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							<img src="{% static 'images/avatars/defaulimage.png' %}" class="user-img" alt="user avatar">
 							<div class="user-info">
-								<p class="user-name mb-0">Admin</p>
+								<p class="user-name mb-0">{{ request.user.first_name }} {{ request.user.last_name }}</p>
 							</div>
 						</a>
 						<ul class="dropdown-menu dropdown-menu-end">
-							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i class="bx bx-user fs-5"></i><span>Profile</span></a>
-							</li>
-							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i class="bx bx-cog fs-5"></i><span>Settings</span></a>
-							
-							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i class="bx bx-dollar-circle fs-5"></i><span>Earnings</span></a>
+
 							
 							<li>
 								<div class="dropdown-divider mb-0"></div>
@@ -322,6 +318,10 @@
 		</header>
 		<!--end header -->
 		<!--navigation-->
+		
+			
+			
+
 		   <div class="primary-menu">
 			   <nav class="navbar navbar-expand-lg align-items-center">
 				  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
@@ -349,7 +349,7 @@
 								<li><a class="dropdown-item" href="{% url 'dashbord' %}"><i class='bx bx-pie-chart-alt' ></i>Default</a></li>
 								</ul>
 							</li>
-							{% if request.user.is_superuser %}
+							
 							<li class="nav-item dropdown">
 								<a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="javascript:;" data-bs-toggle="dropdown">
 									<div class="parent-icon"><i class='bx bx-cube'></i>
@@ -359,19 +359,21 @@
 								</a>
 								<ul class="dropdown-menu">
 									<li><a class="dropdown-item" href="{% url 'center_list' %}"><i class='bx bx-file' ></i>List of Centers</a></li>
-									<li><a class="dropdown-item" href="{% url 'coordinator_lists' %}"><i class='bx bx-file' ></i>List of Coordinators</a></li>
-								
-								
+
+									{% if request.user.is_superuser %}
+										<li><a class="dropdown-item" href="{% url 'batch-list' %}"><i class='bx bx-file' ></i>Batches</a></li>
+										<li><a class="dropdown-item" href="{% url 'coordinator_lists' %}"><i class='bx bx-file' ></i>List of Coordinators</a></li>
+										<li><a class="dropdown-item" href="{% url 'coach_list' %}"><i class='bx bx-file' ></i>Coach</a></li>
+									{% endif %}
+									
 								</ul>
 							</li>
-							{% endif %}
 							<li class="nav-item dropdown">
 								<a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="javascript:;" data-bs-toggle="dropdown">
 									<div class="parent-icon"><i class='bx bx-message-square-edit'></i>
 									</div>
 									<div class="menu-title d-flex align-items-center">Leads</div>
-									<div class="ms-auto dropy-icon"><i class='bx bx-chevron-down'></i></div>
-									
+									<div class="ms-auto dropy-icon"><i class='bx bx-chevron-down'></i></div>	
 								</a>
 								<ul class="dropdown-menu">									
 									<li> <a class="dropdown-item" href="{% url 'add_lead' %}"><i class='bx bx-edit'></i>Add Lead</a>
@@ -393,25 +395,27 @@
 								
 								</ul>
 							</li>
-							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="javascript:;" data-bs-toggle="dropdown">
-									<div class="parent-icon"><i class='bx bx-notepad'></i>
-									</div>
-									<div class="menu-title d-flex align-items-center">Attandance</div>
-									<div class="ms-auto dropy-icon"><i class='bx bx-chevron-down'></i></div>
+							
 
-								</a>
 
-								<!-- Do not delete this its for Dark mode-->
-								<ul class="dropdown-menu scroll-menu">
-									<li><a class="dropdown-item" href="{% url 'attends_centers' %}"><i class='bx bx-file' ></i>List of Centers</a></li>
-								</ul>
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="javascript:;" data-bs-toggle="dropdown">
+										<div class="parent-icon"><i class='bx bx-notepad'></i>
+										</div>
+										<div class="menu-title d-flex align-items-center">Attandance</div>
+										<div class="ms-auto dropy-icon"><i class='bx bx-chevron-down'></i></div>
 
-							</li>
+									</a>
+									<ul class="dropdown-menu scroll-menu">
+										<li><a class="dropdown-item" href="{% url 'attends_centers' %}"><i class='bx bx-file' ></i>List of Centers</a></li>
+									</ul>
+								</li>
+							
 					  	</ul>
 					</div>
 				  </div>
 			  </nav>
+			  
 		</div>
 		<!--end navigation-->
 	   </div>

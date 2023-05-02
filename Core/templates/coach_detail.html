@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'header.html' %}
+<br>
+<br>
+<br>
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="mb-3">{{ coach.user.first_name }} {{ coach.user.last_name }}</h3>
+      <p class="mb-2"><strong>Primary Mobile:</strong> {{ coach.primary_mobile }}</p>
+      <p class="mb-2"><strong>Secondary Mobile:</strong> {{ coach.secondary_mobile }}</p>
+      <p class="mb-2"><strong>Place:</strong> {{ coach.place }}</p>
+      <p class="mb-2"><strong>Years of Experience:</strong> {{ coach.years_of_experience }}</p>
+      <p class="mb-2"><strong>Center:</strong> {{ coach.center.name }}</p>
+    </div>
+    <div class="col-md-6">
+      <form action="{% url 'delete_coach' coach.pk %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Delete" class="btn btn-danger float-end">
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+

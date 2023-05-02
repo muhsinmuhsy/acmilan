@@ -10,6 +10,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your models here.
 
@@ -133,9 +134,24 @@ def delete_coordinator(request, coordinator_id):
 
 # ------------------------------------- Centers --------------------------------------------------------------- #
 
-@login_required 
+# @login_required 
+# def center_list(request):
+#     if request.user.is_superuser:
+#         centers = Center.objects.annotate(student_count=Count('student'))
+#     else:
+#         coordinator = Coordinator.objects.get(user=request.user)
+#         centers = coordinator.centers.all()
+#     return render(request, 'center_list.html', {'centers': centers})
+
+@login_required
 def center_list(request):
-    centers = Center.objects.annotate(student_count=Count('student'))
+    if request.user.is_superuser:
+        # if user is a superuser, show all centers
+        centers = Center.objects.annotate(student_count=Count('student'))
+    else:
+        # if user is a coordinator, show only their associated centers
+        coordinator = request.user.coordinator
+        centers = coordinator.centers.annotate(student_count=Count('student'))
     return render(request, 'center_list.html', {'centers': centers})
 
 @login_required 
@@ -193,11 +209,15 @@ def center_delete_student(request, student_id):
 
 # ---------------------------------------- Leads ---------------------------------------------------- #
 
-@login_required 
+@login_required
 def add_lead(request):
-    coordinators = Coordinator.objects.all()
     lead_types = Lead.LEAD_TYPES
     
+    if request.user.is_superuser:
+        coordinators = Coordinator.objects.all()
+    else:
+        coordinators = [request.user.coordinator]  # Only show current user's coordinator
+        
     if request.method == 'POST':
         ref_no = request.POST.get('ref_no')
         student_name = request.POST.get('student_name')
@@ -222,10 +242,18 @@ def add_lead(request):
     else:
         return render(request, 'add_lead.html', {'coordinators': coordinators, 'lead_types': lead_types})
 
-@login_required 
+
+@login_required
 def lead_list(request):
-    lead = Lead.objects.all()
-    return render(request, 'lead_list.html', {'lead':lead})
+    if request.user.is_superuser:
+        # If the user is an admin, show all leads
+        leads = Lead.objects.all()
+    else:
+        # If the user is a coordinator, show only their assigned leads
+        leads = Lead.objects.filter(coordinator=request.user.coordinator)
+
+    return render(request, 'lead_list.html', {'leads': leads})
+
 
 @login_required 
 def delete_lead(request, lead_id):
@@ -261,8 +289,14 @@ def lead_view(request, lead_id):
 
 @login_required 
 def student_list(request):
-    students = Student.objects.all()
+    if request.user.is_superuser:
+        students = Student.objects.all()
+    else:
+        coordinator = Coordinator.objects.get(user=request.user)
+        centers = coordinator.centers.all()
+        students = Student.objects.filter(center__in=centers)
     return render(request, 'student_list.html' ,{'students':students})
+
 
 @login_required 
 def add_student(request, center_id):
@@ -346,19 +380,52 @@ def delete_student(request, student_id):
 def view_student(request, student_id):
     student = Student.objects.get(pk=student_id)
     attendance_records = Attendance.objects.filter(Student=student)
+
+    # Payment
+    payments = Payment.objects.filter(student=student)
+
+    if request.method == 'POST' :
+        date = request.POST.get('date')
+        amount = request.POST.get('amount')
+        description = request.POST.get('description')
+
+        payment = Payment(student=student,date=date,amount=amount,description=description)
+        payment.save()
+        return redirect('.')
     context = {
         'student': student,
         'attendance_records': attendance_records,
+        'payments' : payments,
     }
     return render(request, "view_student.html", context)
+
+@login_required
+def delete_payment(request, student_id, payment_id):
+    payment = get_object_or_404(Payment, pk=payment_id, student_id=student_id)
+    if request.method == 'POST':
+        payment.delete()
+        return redirect('view_student', student_id=student_id)
+    return render(request, 'delete_payment.html', {'payment': payment})
 
 # -------------------------------------- Attendance ---------------------------------------------------- #
 
 # Centers #
-@login_required 
+@login_required
 def attends_centers(request):
-    centers = Center.objects.all()
-    return render(request, "attends_centers.html", {'centers':centers})
+    if request.user.is_superuser:
+        centers = Center.objects.all()
+    else:
+        try:
+            centers = Center.objects.filter(coordinator=request.user.coordinator)
+        except ObjectDoesNotExist:
+            centers = Center.objects.none()
+        try:
+            centers |= Center.objects.filter(coach=request.user.coach)
+        except ObjectDoesNotExist:
+            pass
+    return render(request, "attends_centers.html", {'centers': centers})
+
+
 
 # Batches #
 @login_required 
@@ -492,27 +559,35 @@ def add_attendance(request, center_id, batch_id, section_id):
         students_selected = request.POST.getlist('student')
         date = datetime.strptime(request.POST.get('date'), '%Y-%m-%d').date()
 
-        for student in students:
-            print (f'student id : {student.id}, attandence : {students_selected}')
-            if str(student.id) in students_selected:
-                data = Attendance(date=date,time_section=section,Student=student,Attandance='Precent')
-                data.save()
-            else:
-                data = Attendance(date=date,time_section=section,Student=student,Attandance='Absent')
-                data.save()
+        # Check if attendance already exists for this batch and date
+        if Attendance.objects.filter(date=date, time_section__batch=batch).exists():
+            messages.warning(request, f"Attendance for {date} has already been taken for this batch.")
+        else:
+            # Loop through all students and create attendance records
+            for student in students:
+                if str(student.id) in students_selected:
+                    data = Attendance(date=date, time_section=section, Student=student, Attandance='Precent')
+                    data.save()
+                else:
+                    data = Attendance(date=date, time_section=section, Student=student, Attandance='Absent')
+                    data.save()
 
-        section.Ended = True
-        section.save()
+            # Mark time section as ended
+            section.Ended = True
+            section.save()
 
-        return redirect('attendance_date', center_id=center.id,batch_id=batch.id, section_id=section.id)
-    
+            messages.success(request, f"Attendance for {date} has been taken for this batch.")
+
+            return redirect('attendance_date', center_id=center.id, batch_id=batch.id, section_id=section.id)
+
     context = {
         'center': center,
         'section': section,
         'students': students,
-        'batch':batch,
+        'batch': batch,
     }
     return render(request, 'add_attendance.html', context)
+
 
 # @login_required     
 # def edit_attendance(request, center_id, section_id, attendance_id):
@@ -564,10 +639,69 @@ def attendance_detail(request, center_id, batch_id, section_id, date):
 
     return render(request, 'attendance_detail.html', context)
 
+# --------------------------------------------- Coach ------------------------------------------------------ #
 
+@login_required
+def add_coach(request):
+    centers = Center.objects.all()
+    if request.method == 'POST':
+        user = User.objects.create_user(
+            username=request.POST.get('username'),
+            email=request.POST.get('email'),
+            password=request.POST.get('password'),
+            first_name=request.POST.get('first_name'),
+            last_name=request.POST.get('last_name'),
+        )
+        coach = Coach.objects.create(
+            user=user,
+            primary_mobile=request.POST.get('primary_mobile'),
+            secondary_mobile=request.POST.get('secondary_mobile'),
+            place=request.POST.get('place'),
+            years_of_experience=request.POST.get('years_of_experience'),
+            center_id=request.POST.get('center_id'),
+        )
+        return redirect('coach_detail', pk=coach.pk)
+    context = {
+        'centers': centers,
+    }
+    return render(request, 'add_coach.html', context)
 
+@login_required
+def delete_coach(request, pk):
+    coach = get_object_or_404(Coach, pk=pk)
+    coach.delete()
+    return redirect('coach_list')
 
+@login_required
+def coach_detail(request, pk):
+    coach = get_object_or_404(Coach, pk=pk)
+    return render(request, 'coach_detail.html', {'coach': coach})
 
+@login_required
+def coach_list(request):
+    coaches = Coach.objects.all()
+    return render(request, 'coach_list.html', {'coaches': coaches})
 
+# --------------------------------- batches ---------------------------------------------------------- #
 
+def batch_list(request):
+    batches = Batch.objects.all()
+    return render(request, 'batch_list.html', {'batches': batches})
 
+def batch_create(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        center_id = request.POST['center']
+        batch = Batch(name=name, center_id=center_id)
+        batch.save()
+        return redirect('batch-list')
+    else:
+        centers = Center.objects.all()
+        return render(request, 'batch_create.html', {'centers': centers})
+
+def batch_delete(request, pk):
+    batch = get_object_or_404(Batch, pk=pk)
+    if request.method == 'POST':
+        batch.delete()
+        return redirect('batch-list')
+    return render(request, 'batch_confirm_delete.html', {'batch': batch})
