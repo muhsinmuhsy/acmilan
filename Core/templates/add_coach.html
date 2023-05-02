@@ -1,43 +1,90 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
-  <h1>Add Coach</h1>
-  <form method="POST">
-    {% csrf_token %}
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required class="form-control" >
+    {% include 'header.html' %}
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
 
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required class="form-control" >
+
+   
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <h1 class="text-center mb-4">Add Coach</h1>
+            <form method="POST" class="needs-validation" novalidate>
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required class="form-control" >
+                <div class="invalid-feedback">Please enter a username.</div>
+              </div>
     
-    <label for="first_name">First Name:</label>
-    <input type="text" id="first_name" name="first_name" required class="form-control" >
-
-    <label for="last_name">Last Name:</label>
-    <input type="text" id="last_name" name="last_name" required class="form-control" >
-
-    <label for="primary_mobile">Primary Mobile:</label>
-    <input type="text" name="primary_mobile" required>
-    <br>
-    <label for="secondary_mobile">Secondary Mobile:</label>
-    <input type="text" name="secondary_mobile" required>
-    <br>
-    <label for="place">Place:</label>
-    <input type="text" name="place" required>
-    <br>
-    <label for="years_of_experience">Years of Experience:</label>
-    <input type="number" name="years_of_experience" required>
-    <br>
-    <label for="center_id">Center:</label>
-    <select name="center_id" required>
-      {% for center in centers %}
-        <option value="{{ center.id }}">{{ center.name }}</option>
-      {% endfor %}
-    </select>
-
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required class="form-control">
-    <br>
-    <input type="submit" value="Save">
-  </form>
+              <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required class="form-control" >
+                <div class="invalid-feedback">Please enter a valid email address.</div>
+              </div>
+    
+              <div class="form-group">
+                <label for="first_name">First Name:</label>
+                <input type="text" id="first_name" name="first_name" required class="form-control" >
+                <div class="invalid-feedback">Please enter a first name.</div>
+              </div>
+    
+              <div class="form-group">
+                <label for="last_name">Last Name:</label>
+                <input type="text" id="last_name" name="last_name" required class="form-control" >
+                <div class="invalid-feedback">Please enter a last name.</div>
+              </div>
+    
+              <div class="form-group">
+                <label for="primary_mobile">Primary Mobile:</label>
+                <input type="text" name="primary_mobile" required class="form-control">
+                <div class="invalid-feedback">Please enter a primary mobile number.</div>
+              </div>
+    
+              <div class="form-group">
+                <label for="secondary_mobile">Secondary Mobile:</label>
+                <input type="text" name="secondary_mobile" required class="form-control">
+                <div class="invalid-feedback">Please enter a secondary mobile number.</div>
+              </div>
+    
+              <div class="form-group">
+                <label for="place">Place:</label>
+                <input type="text" name="place" required class="form-control">
+                <div class="invalid-feedback">Please enter a place.</div>
+              </div>
+    
+              <div class="form-group">
+                <label for="years_of_experience">Years of Experience:</label>
+                <input type="number" name="years_of_experience" required class="form-control">
+                <div class="invalid-feedback">Please enter the number of years of experience.</div>
+              </div>
+    
+              <div class="form-group">
+                <label for="center_id">Center:</label>
+                <select name="center_id" required class="form-control">
+                  {% for center in centers %}
+                    <option value="{{ center.id }}">{{ center.name }}</option>
+                  {% endfor %}
+                </select>
+                <div class="invalid-feedback">Please select a center.</div>
+              </div>
+    
+              <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required class="form-control">
+                <div class="invalid-feedback">Please enter a password.</div>
+              </div>
+    
+              <button type="submit" class="btn btn-primary btn-block mt-4">Save</button>
+            </form>
+          </div>
+        </div>
+      </div
+    
 {% endblock %}
