@@ -11,24 +11,46 @@ from django.http import JsonResponse
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils import timezone
 
 
 # Create your models here.
 
 # ---------------------------------------- Auth --------------------------------------------------------#
+# def login_view(request):
+#     if request.method == 'POST':
+#         username = request.POST['username']
+#         password = request.POST['password']
+#         user = authenticate(request, username=username, password=password)
+#         if user is not None:
+#             login(request, user)
+#             return redirect('dashbord')
+#         else:
+#             error = 'Invalid username or password. Please try again.'
+#     else:
+#         error = None
+#     return render(request, 'login.html', {'error': error})
+
+
+
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
         if user is not None:
+            # Log the login time
+            user.last_login = timezone.now()
+            user.save()
+
             login(request, user)
             return redirect('dashbord')
         else:
-            error = 'Invalid credentials. Please try again.'
+            error = 'Invalid username or password. Please try again.'
     else:
         error = None
     return render(request, 'login.html', {'error': error})
+
 
 def logout_view(request):
     logout(request)
@@ -36,14 +58,31 @@ def logout_view(request):
 
 # ------------------------------------- Index --------------------------------------------------- #
 
-@login_required 
+# @login_required 
+# def dashbord(request):
+#     center_count = Center.objects.count()
+#     coordianator_count = Coordinator.objects.count()
+#     student_count = Student.objects.count()
+#     # student_count = Student.objects.annotate(num_students=Count('id'))
+#     return render(request, 'dashbord.html', {'student_count': student_count, 'center_count':center_count, 'coordinator_count':coordianator_count})
+
+@login_required
 def dashbord(request):
     center_count = Center.objects.count()
     coordianator_count = Coordinator.objects.count()
     student_count = Student.objects.count()
-    # student_count = Student.objects.annotate(num_students=Count('id'))
-    return render(request, 'dashbord.html', {'student_count': student_count, 'center_count':center_count, 'coordinator_count':coordianator_count})
 
+    # Get a list of all users and their last login times
+    users = User.objects.all().order_by('-last_login')[:10]
+
+    user_logins = [(u.username, u.last_login.astimezone(timezone.get_current_timezone()) if u.last_login is not None else None) for u in users]
+
+    return render(request, 'dashbord.html', {
+        'user_logins': user_logins,
+        'student_count': student_count,
+        'center_count': center_count,
+        'coordinator_count': coordianator_count,
+    })
 
 # ---------------------------------- Coordinators -----------------------------------------------------#
 
@@ -281,12 +320,55 @@ def lead_view(request, lead_id):
         elif action == 'success':
             lead.lead_status = 'Success'
             lead.save()
-            # return redirect('add_student')
+            return redirect('lead_student')
         elif action == 'pending':
             lead.lead_status = 'Pending'
             lead.save()
 
     return render(request, 'lead_view.html', {'lead': lead, 'comment': lead.comment})
+
+
+
+def lead_student(request):
+    message = None
+    centers = Center.objects.all()
+    if request.method == 'POST':
+        center_id = request.POST.get('center')  # get the selected center_id from the form
+        center = Center.objects.get(id=center_id)  # retrieve the center instance based on the id
+        student = Student(
+            ref_number=request.POST['ref_number'],
+            full_name=request.POST['full_name'],
+            city=request.POST['city'],
+            zipcode=request.POST['zipcode'],
+            email=request.POST['email'],
+            date_of_birth=request.POST['date_of_birth'],
+            preferred_location=request.POST['preferred_location'],
+            street_address=request.POST['street_address'],
+            state=request.POST['state'],
+            phone_number=request.POST['phone_number'],
+            guardian_name=request.POST['guardian_name'],
+            guardian_phone_number=request.POST['guardian_phone_number'],
+            id_proof=request.FILES.get('id_proof'),
+            age_group=request.POST['age_group'],
+            mode_of_travel=request.POST['mode_of_travel'],
+            football_playing_position=request.POST['football_playing_position'],
+            school_Name=request.POST['school_Name'],
+            school_Address=request.POST['school_Address'],
+            study_Standard=request.POST['study_Standard'],
+            study_Devision=request.POST['study_Devision'],
+            center=center,  # assign the center instance, not the id
+        )
+        try:
+            student.save()
+            center.num_students += 1
+            center.save()
+            return redirect('center_student_list', center_id=center.id)
+        except IntegrityError:
+            message = f"A student with this reference number already exists."
+    else:
+        student = Student()
+    return render(request, 'lead_student.html', {'student': student, 'centers': centers, 'message': message})
+
 
 # ---------------------------------- Students -------------------------------------------------- #
 
@@ -343,6 +425,36 @@ def add_student(request, center_id):
         student = Student()
     return render(request, 'add_student.html', {'student': student, 'center': center, 'batches': batches,'message':message})
 
+# @login_required 
+# def edit_student(request, student_id):
+#     student = get_object_or_404(Student, id=student_id)
+#     if request.method == 'POST':
+#         student.ref_number = request.POST['ref_number']
+#         student.full_name = request.POST['full_name']
+#         student.city = request.POST['city']
+#         student.zipcode = request.POST['zipcode']
+#         student.email = request.POST['email']
+#         student.date_of_birth = request.POST['date_of_birth']
+#         student.preferred_location = request.POST['preferred_location']
+#         student.street_address = request.POST['street_address']
+#         student.state = request.POST['state']
+#         student.phone_number = request.POST['phone_number']
+#         student.guardian_name = request.POST['guardian_name']
+#         student.guardian_phone_number = request.POST['guardian_phone_number']
+#         if request.FILES.get('id_proof'):
+#             student.id_proof = request.FILES['id_proof']
+#         student.age_group = request.POST['age_group']
+#         student.mode_of_travel = request.POST['mode_of_travel']
+#         student.football_playing_position = request.POST['football_playing_position']
+#         student.school_Name = request.POST['school_Name']
+#         student.school_Address = request.POST['school_Address']
+#         student.study_Standard = request.POST['study_Standard']
+#         student.study_Devision = request.POST['study_Devision']
+#         student.save()
+#         return redirect('center_student_list', center_id=student.center.id)
+#     centers = Center.objects.all()
+#     return render(request, 'edit_student.html', {'student': student, 'centers': centers})
+
 @login_required 
 def edit_student(request, student_id):
     student = get_object_or_404(Student, id=student_id)
@@ -368,10 +480,14 @@ def edit_student(request, student_id):
         student.school_Address = request.POST['school_Address']
         student.study_Standard = request.POST['study_Standard']
         student.study_Devision = request.POST['study_Devision']
+        student.batch = Batch.objects.get(pk=request.POST['batch'])
         student.save()
         return redirect('center_student_list', center_id=student.center.id)
     centers = Center.objects.all()
-    return render(request, 'edit_student.html', {'student': student, 'centers': centers})
+    center = student.center
+    batches = center.batch_set.all()
+    return render(request, 'edit_student.html', {'student': student, 'centers': centers, 'center': center, 'batches': batches})
+
 
 @login_required 
 def delete_student(request, student_id):
@@ -687,10 +803,12 @@ def coach_list(request):
 
 # --------------------------------- Batches ---------------------------------------------------------- #
 
+@login_required
 def batch_list(request):
     batches = Batch.objects.all()
     return render(request, 'batch_list.html', {'batches': batches})
 
+@login_required
 def batch_create(request):
     if request.method == 'POST':
         name = request.POST['name']
@@ -702,9 +820,56 @@ def batch_create(request):
         centers = Center.objects.all()
         return render(request, 'batch_create.html', {'centers': centers})
 
+@login_required
 def batch_delete(request, pk):
     batch = get_object_or_404(Batch, pk=pk)
     if request.method == 'POST':
         batch.delete()
         return redirect('batch-list')
     return render(request, 'batch_confirm_delete.html', {'batch': batch})
+
+# --------------------------------- Transfor -------------------------------------------------------- #
+
+@login_required
+def trasnfor_center(request):
+    center = Center.objects.all()
+    return render (request, 'transfor_center.html', {'center':center})
+
+@login_required
+def transfor_student(request, center_id):
+    center = Center.objects.get(pk=center_id)
+    student = Student.objects.filter(center=center)
+    context = {
+        'center' : center,
+        'student' : student
+    }
+    return render (request, 'transfor_student.html', context)
+
+@login_required
+def transfor(request, center_id, student_id):
+    center = Center.objects.get(pk=center_id)
+    student = Student.objects.get(pk=student_id)
+    centers = Center.objects.all()
+    batches = Batch.objects.filter(center=center)
+    if request.method == 'POST':
+        student.center_id = request.POST.get('center')
+        student.batch_id = request.POST.get('batch')
+        student.save()
+        return redirect('transfor_center')
+
+    context = {
+        'center': center,
+        'centers': centers,
+        'student': student,
+        'batches': batches,
+    }
+    return render(request, 'transfor.html', context)
+
+@login_required
+def get_batches(request, center_id):
+    batches = list(Batch.objects.filter(center_id=center_id).values('pk', 'name'))
+    return JsonResponse({'batches': batches})
+
+
+
+

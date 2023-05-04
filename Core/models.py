@@ -131,7 +131,7 @@ class TimeSection(models.Model):
 #----------------------------------------- Attendance ----------------------------------------------#
 
 class Attendance(models.Model):
-    Student = models.ForeignKey(Student,on_delete=models.DO_NOTHING)
+    Student = models.ForeignKey(Student,on_delete=models.CASCADE)
     time_section = models.ForeignKey(TimeSection, on_delete=models.CASCADE)
     date = models.DateField()
     Attandance = models.CharField(max_length=15,default='Absent')

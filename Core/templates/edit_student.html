@@ -35,42 +35,42 @@
       <form method="post" enctype="multipart/form-data">
           {% csrf_token %}
           <label for="ref_number">Reference Number:</label>
-          <input type="text" name="ref_number" id="ref_number" value="{{ student.ref_number }}" required class="form-control"><br>
+          <input type="text" name="ref_number" id="ref_number" value="{{ student.ref_number }}"  class="form-control"><br>
 
           <label for="full_name">Full Name:</label>
-          <input type="text" name="full_name" id="full_name" value="{{ student.full_name }}" required class="form-control"><br>
+          <input type="text" name="full_name" id="full_name" value="{{ student.full_name }}"  class="form-control"><br>
 
           <label for="city">City:</label>
-          <input type="text" name="city" id="city" value="{{ student.city }}" required class="form-control"><br>
+          <input type="text" name="city" id="city" value="{{ student.city }}"  class="form-control"><br>
 
           <label for="zipcode">Zip Code:</label>
-          <input type="text" name="zipcode" id="zipcode" value="{{ student.zipcode }}" required class="form-control"><br>
+          <input type="text" name="zipcode" id="zipcode" value="{{ student.zipcode }}"  class="form-control"><br>
 
           <label for="email">Email:</label>
-          <input type="email" name="email" id="email" value="{{ student.email }}" required class="form-control"><br>
+          <input type="email" name="email" id="email" value="{{ student.email }}"  class="form-control"><br>
 
           <label for="date_of_birth">Date of Birth:</label>
-          <input type="date" name="date_of_birth" id="date_of_birth" value="{{ student.date_of_birth|default_if_none:''|date:'Y-m-d' }}" required class="form-control"><br>
+          <input type="date" name="date_of_birth" id="date_of_birth" value="{{ student.date_of_birth|default_if_none:''|date:'Y-m-d' }}"  class="form-control" required><br>
 
 
 
           <label for="preferred_location">Preferred Location:</label>
-          <input type="text" name="preferred_location" id="preferred_location" value="{{ student.preferred_location }}" required class="form-control"><br>
+          <input type="text" name="preferred_location" id="preferred_location" value="{{ student.preferred_location }}"  class="form-control"><br>
 
           <label for="street_address">Street Address:</label>
-          <input type="text" name="street_address" id="street_address" value="{{ student.street_address }}" required class="form-control"><br>
+          <input type="text" name="street_address" id="street_address" value="{{ student.street_address }}"  class="form-control"><br>
 
           <label for="state">State:</label>
-          <input type="text" name="state" id="state" value="{{ student.state }}" required class="form-control"><br>
+          <input type="text" name="state" id="state" value="{{ student.state }}"  class="form-control"><br>
 
           <label for="phone_number">Phone Number:</label>
-          <input type="text" name="phone_number" id="phone_number" value="{{ student.phone_number }}" required class="form-control"><br>
+          <input type="text" name="phone_number" id="phone_number" value="{{ student.phone_number }}"  class="form-control"><br>
 
           <label for="guardian_name">Guardian Name:</label>
-          <input type="text" name="guardian_name" id="guardian_name" value="{{ student.guardian_name }}" required class="form-control"><br>
+          <input type="text" name="guardian_name" id="guardian_name" value="{{ student.guardian_name }}"  class="form-control"><br>
 
           <label for="guardian_phone_number">Guardian Phone Number:</label>
-          <input type="text" name="guardian_phone_number" id="guardian_phone_number" value="{{ student.guardian_phone_number }}" required class="form-control"><br>
+          <input type="text" name="guardian_phone_number" id="guardian_phone_number" value="{{ student.guardian_phone_number }}"  class="form-control"><br>
 
           <label for="id_proof">ID Proof:</label>
           <input type="file" name="id_proof" id="id_proof"  class="form-control"><br>
@@ -79,29 +79,39 @@
           <br>
 
           <label for="age_group">Age Group:</label>
-          <input type="text" name="age_group" id="age_group" value="{{ student.age_group }}" required class="form-control">
+          <input type="text" name="age_group" id="age_group" value="{{ student.age_group }}"  class="form-control">
           
                       
          
                   <br>
 
           <label for="mode_of_travel">Mode of Travel:</label>
-          <input type="text" name="mode_of_travel" id="mode_of_travel" value="{{ student.mode_of_travel }}" required class="form-control"><br>
+          <input type="text" name="mode_of_travel" id="mode_of_travel" value="{{ student.mode_of_travel }}"  class="form-control"><br>
 
           <label for="football_playing_position">Football Playing Position:</label>
-          <input type="text" name="football_playing_position" id="football_playing_position" value="{{ student.football_playing_position }}" required class="form-control"><br>
+          <input type="text" name="football_playing_position" id="football_playing_position" value="{{ student.football_playing_position }}"  class="form-control"><br>
           
           <label for="school_Name">School Name:</label>
-          <input type="text" name="school_Name" id="school_Name" value="{{ student.school_Name }}" required class="form-control"><br>
+          <input type="text" name="school_Name" id="school_Name" value="{{ student.school_Name }}"  class="form-control"><br>
           
           <label for="school_Address">School Address:</label>
-          <input type="text" name="school_Address" id="school_Address" value="{{ student.school_Address }}" required class="form-control"><br>
+          <input type="text" name="school_Address" id="school_Address" value="{{ student.school_Address }}"  class="form-control"><br>
           
           <label for="study_Standard">Study Standard:</label>
-          <input type="text" name="study_Standard" id="study_Standard" value="{{ student.study_Standard }}" required class="form-control"><br>
+          <input type="text" name="study_Standard" id="study_Standard" value="{{ student.study_Standard }}"  class="form-control" required><br>
           
           <label for="study_Devision">Study Devision:</label>
-          <input type="text" name="study_Devision" id="study_Devision" value="{{ student.study_Devision }}" required class="form-control"><br>
+          <input type="text" name="study_Devision" id="study_Devision" value="{{ student.study_Devision }}"  class="form-control"><br>
+
+          
+            <label for="batch">Batch:</label>
+            <select class="form-control" name="batch" id="batch" required>
+                {% for batch in batches %}
+                    <option value="{{ batch.id }}" {% if batch.id == student.batch.id %}selected{% endif %}>{{ batch.name }}</option>
+                {% endfor %}
+            </select>
+        
+        
           
           <button class="btn btn-primary w-24 ml-2" type="submit">Update</button>
       </form>

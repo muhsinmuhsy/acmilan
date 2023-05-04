@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+{% include 'header.html' %}
+<br><br><br><br><br>
+
+<div class="container">
+  <div class="row mt-5">
+    <div class="col-md-6 offset-md-3">
+      <form method="POST" action="{% url 'transfor' center.id student.id %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="center_select">Select Center:</label>
+          <select class="form-control" name="center" id="center_select">
+            {% for center in centers %}
+              <option value="{{ center.id }}" {% if center == student.center %}selected{% endif %}>{{ center.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="batch_select">Select Batch:</label>
+          <select class="form-control" name="batch" id="batch_select">
+            {% for batch in batches %}
+              <option value="{{ batch.id }}" {% if batch == student.batch %}selected{% endif %}>{{ batch.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <br>
+        <!-- Form fields here -->
+        <button type="submit" class="btn btn-primary">Transfer</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- For fetching batches dynamically -->
+
+<script>
+  // Change batches dynamically based on center selection
+  const centerSelect = document.getElementById('center_select');
+  const batchSelect = document.getElementById('batch_select');
+  centerSelect.addEventListener('change', function() {
+      const centerId = centerSelect.value;
+      fetch(`/get_batches/${centerId}/`)
+          .then(response => response.json())
+          .then(data => {
+              batchSelect.innerHTML = '';
+              for (let batch of data.batches) {
+                  const option = document.createElement('option');
+                  option.value = batch.pk;
+                  option.text = batch.name;
+                  if (batch.pk == '{{ student.batch_id }}') {
+                      option.selected = true;
+                  }
+                  batchSelect.appendChild(option);
+              }
+          });
+  });
+</script>
+
+{% endblock %}
+
+<style>
+  /* Additional CSS styling here */
+</style>

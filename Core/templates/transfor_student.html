@@ -95,13 +95,7 @@
 
     </style>
     <body>
-        {% if request.user.is_authenticated %}
-            {% if request.user.is_superuser %}
-                {% include 'header.html' %}
-            {% elif request.user.coordinator %}
-                {% include 'header.html' %}
-            {% endif %}
-        {% endif %}
+        {% include 'header.html' %}
         <br>
         <br>
         <br>
@@ -109,13 +103,9 @@
         <br>
         <br>
         <br>
-        <h2>CENTERS</h2>
-        {% if request.user.is_authenticated %}
-            {% if request.user.is_superuser or request.user.coordinator %}
-                <a href="{% url 'center_add' %}" class="btn btn-primary shadow-md btn-add">Add New Center</a>
-            {% endif %}
-            
-        {% endif %}
+        <h2>{{ center.name }}</h2>
+        
+       
         <br>
         <br>
         <br>
@@ -126,25 +116,29 @@
                         <thead>
                             <tr>
                                 <th>SL NO</th>
-                                <th>REF NO</th>
-                                <th>CENTER NAME</th>
-                                <th>LOCATION</th>
-                         
+                                <th>REF. NO</th>
+                                <th>STUDENT NAME</th>
+                                <th>AGE GROUP</th>
+                                <th>POSITION</th>
+                                <th>CENTER</th>
+                                <th>ACTIONS</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for center in centers %}
+                            {% for student in student %}
                                 <tr>
                                     <td>{{forloop.counter}}</td>
-                                    <td>{{ center.ref_number }}</td>
-                                    <td>{{ center.name }}</td>
-                                    <td>{{ center.location }}</td>
-                                    <td>{{ center.student_count }}</td>
+                                    <td>{{ student.ref_number }}</td>
+                                    <td>{{ student.full_name }}</td>
+                                    <td>{{ student.age_group }}</td>
+                                    <td>{{ student.football_playing_position }}</td>
+                                    <td>{{ student.center }}</td>
                                     <td>
-                                        <a href="{% url 'center_batch' center.id %}" style="margin-left: 15px;">
-                                            <i style="font-size: 20px;color: blue;" class='bx bx-show'></i>
+                                        
+                                        <a  href="{% url 'transfor' center.id student.id %}" > 
+                                            <i style="font-size: 20px;color: black;" class='bx bxs-edit-alt'></i>
                                         </a>
-                                       
+                                        
                                     </td>
                                 </tr>   
                             {% endfor %}
@@ -152,7 +146,6 @@
                     </table>
                 </div>
             </div>
-        </div>   
+        </div>
     </body>
-    
 {% endblock content %}

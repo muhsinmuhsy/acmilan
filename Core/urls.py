@@ -35,6 +35,8 @@ urlpatterns = [
     path('lead_list', views.lead_list, name='lead_list'),
     path('leads/<int:lead_id>/delete/', views.delete_lead, name='delete_lead'),
     path('lead_view/<int:lead_id>', views.lead_view, name='lead_view'),
+    path('lead_student', views.lead_student, name='lead_student'),
+
 
     # ------------------------------------------- Students ------------------------------------------------------ #
 
@@ -79,6 +81,11 @@ urlpatterns = [
     path('batches/', views.batch_list, name='batch-list'),
     path('batches/create/', views.batch_create, name='batch-create'),
     path('batches/<int:pk>/delete/', views.batch_delete, name='batch-delete'),
+
+    path('transfor/center' , views.trasnfor_center, name='transfor_center'),
+    path('transfor/center/student/<int:center_id>/', views.transfor_student, name='transfor_student'),
+    path('transfor/center/student/<int:center_id>/<int:student_id>/', views.transfor, name='transfor'),
+    path('get_batches/<int:center_id>/', views.get_batches, name='get_batches'),
 
 ]
 

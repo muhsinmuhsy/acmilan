@@ -95,13 +95,7 @@
 
     </style>
     <body>
-        {% if request.user.is_authenticated %}
-            {% if request.user.is_superuser %}
-                {% include 'header.html' %}
-            {% elif request.user.coordinator %}
-                {% include 'header.html' %}
-            {% endif %}
-        {% endif %}
+        {% include 'header.html' %}
         <br>
         <br>
         <br>
@@ -110,12 +104,7 @@
         <br>
         <br>
         <h2>CENTERS</h2>
-        {% if request.user.is_authenticated %}
-            {% if request.user.is_superuser or request.user.coordinator %}
-                <a href="{% url 'center_add' %}" class="btn btn-primary shadow-md btn-add">Add New Center</a>
-            {% endif %}
-            
-        {% endif %}
+        
         <br>
         <br>
         <br>
@@ -129,22 +118,25 @@
                                 <th>REF NO</th>
                                 <th>CENTER NAME</th>
                                 <th>LOCATION</th>
-                         
+                              
+                                <th>ACTIONS</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for center in centers %}
+                            {% for center in center %}
                                 <tr>
                                     <td>{{forloop.counter}}</td>
                                     <td>{{ center.ref_number }}</td>
                                     <td>{{ center.name }}</td>
                                     <td>{{ center.location }}</td>
-                                    <td>{{ center.student_count }}</td>
+                                    
                                     <td>
-                                        <a href="{% url 'center_batch' center.id %}" style="margin-left: 15px;">
+                                        <a href="{% url 'transfor_student' center.id %}" style="margin-left: 15px;">
                                             <i style="font-size: 20px;color: blue;" class='bx bx-show'></i>
                                         </a>
-                                       
+
+
+                                        
                                     </td>
                                 </tr>   
                             {% endfor %}
@@ -152,7 +144,7 @@
                     </table>
                 </div>
             </div>
-        </div>   
+        </div>
+        
     </body>
-    
 {% endblock content %}
