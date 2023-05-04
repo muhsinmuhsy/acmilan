@@ -40,86 +40,126 @@
 							</div>
 						</div>
 					</div>
-					<div class="col">
-						<div class="card radius-10 border-start border-0 border-4 border-danger">
-						<div class="card-body">
-							<div class="d-flex align-items-center">
-								<div>
-									<h6 class="mb-0 text-secondary">Total Coordianters</h6>
-									<h4 class="my-1 text-danger">{{ coordinator_count }}</h4>
-									
-								</div>
-								<div class="widgets-icons-2 rounded-circle bg-gradient-burning text-white ms-auto"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
-									<path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
-								</svg>
-								
-								</div>
-							</div>
-						</div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="card radius-10 border-start border-0 border-4 border-success">
-						<div class="card-body">
-							<div class="d-flex align-items-center">
-								<div>
-									<h6 class="mb-0 text-secondary">Toatal Students</h6>
-									<h4 class="my-1 text-success">{{ student_count }}</h4>
-									
-								</div>
-								<div class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto"><i class='bx bx-book-reader' ></i>
-								</div>
-							</div>
-						</div>
-						</div>
-					</div>
-											
-
-					<!-- <div class="col">
-						<div class="card radius-10 border-start border-0 border-4 border-warning">
-						<div class="card-body">
-							<div class="d-flex align-items-center">
-								<div>
-									<p class="mb-0 text-secondary">Total Customers</p>
-									<h4 class="my-1 text-warning">8.4K</h4>
-									<p class="mb-0 font-13">+8.4% from last week</p>
-								</div>
-								<div class="widgets-icons-2 rounded-circle bg-gradient-orange text-white ms-auto"><i class='bx bxs-group'></i>
-								</div>
-							</div>
-						</div>
-						</div>
-					</div>  -->
-
-					<!-- You dont delete this div -->
-					</div>
-
-					<div class="row">
-					
-					<div class="col-12 col-lg-4 d-flex">
-						<div class="card radius-10 w-100">
-							<div class="card-header">
+					{% if request.user.is_superuser %}
+						<div class="col">
+							<div class="card radius-10 border-start border-0 border-4 border-danger">
+							<div class="card-body">
 								<div class="d-flex align-items-center">
 									<div>
-										<h6 class="mb-0">Logged detals</h6>
+										<h6 class="mb-0 text-secondary">Total Coordianters</h6>
+										<h4 class="my-1 text-danger">{{ coordinator_count }}</h4>
+										
 									</div>
+									<div class="widgets-icons-2 rounded-circle bg-gradient-burning text-white ms-auto"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+										<path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
+									</svg>
 									
+									</div>
 								</div>
 							</div>
-							
-							<ul class="list-group list-group-flush">
-								{% for username, last_login in user_logins %}
-									<li class="list-group-item d-flex bg-transparent justify-content-between align-items-center border-top">{{ username }}  <span class="badge bg-primary rounded-pill">
-										{% if last_login %}{{ last_login }}{% else %}Never logged in{% endif %}
-										</span>
-									</li>
-								{% endfor %}	
-							</ul>
+							</div>
 						</div>
-					</div>
-					</div><!--end row-->
+						<div class="col">
+							<div class="card radius-10 border-start border-0 border-4 border-success">
+							<div class="card-body">
+								<div class="d-flex align-items-center">
+									<div>
+										<h6 class="mb-0 text-secondary">Toatal Students</h6>
+										<h4 class="my-1 text-success">{{ student_count }}</h4>
+										
+									</div>
+									<div class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto"><i class='bx bx-book-reader' ></i>
+									</div>
+								</div>
+							</div>
+							</div>
+						</div>
+												
 
-					<!-- <div class="card radius-10">
+						<!-- <div class="col">
+							<div class="card radius-10 border-start border-0 border-4 border-warning">
+							<div class="card-body">
+								<div class="d-flex align-items-center">
+									<div>
+										<p class="mb-0 text-secondary">Total Customers</p>
+										<h4 class="my-1 text-warning">8.4K</h4>
+										<p class="mb-0 font-13">+8.4% from last week</p>
+									</div>
+									<div class="widgets-icons-2 rounded-circle bg-gradient-orange text-white ms-auto"><i class='bx bxs-group'></i>
+									</div>
+								</div>
+							</div>
+							</div>
+						</div>  -->
+
+						<!-- You dont delete this div -->
+						</div>
+
+						
+						
+						
+						<div class="container text-center">
+							<div class="card text-center">
+							  <div class="card-header">
+								<div class="d-flex align-items-center">
+								  <div>
+									<h6 class="mb-0">Logged details</h6>
+								  </div>
+								</div>
+							  </div>
+							  <ul class="list-group list-group-flush text-center">
+								{% for username, last_login in user_logins %}
+								<li class="list-group-item d-flex bg-transparent justify-content-between align-items-center border-top">{{ username }}  <span class="badge bg-primary rounded-pill">
+								  {% if last_login %}{{ last_login }}{% else %}Never logged in{% endif %}
+								  </span>
+								</li>
+								{% endfor %}    
+							  </ul>
+							</div>
+						  </div>
+						  
+						
+						
+
+
+						
+						
+					
+
+						
+							<div class="card">
+								{% if added_students %}
+									<div class="card-body">
+										<h5 class="card-title text-center">Recently Added Students</h5>
+										{% for student in added_students %}
+											<div class="card border shadow-none my-2">
+												<div class="card-body text-center">
+													{% if student %}
+														<div class="d-flex align-items-center justify-content-center">
+															<div>
+																<h6 class="my-1">{{ student.0 }} - Added on {{ student.1 }} by {{ student.2 }}</h6>
+															</div>
+														</div>
+													{% else %}
+														<h6 class="my-1">No students added recently</h6>
+													{% endif %}
+												</div>
+											</div>
+										{% endfor %}
+									</div>
+								{% endif %}
+							</div>
+							
+							
+							
+							
+						
+
+						
+					{% endif %}
+					
+
+					 <!-- <div class="card radius-10">
 						<div class="card-header">
 							<div class="d-flex align-items-center">
 								<div>
@@ -229,10 +269,9 @@
 							</table>
 							</div>
 							</div>
-						</div> -->
+						</div> 
 
-
-						<!-- <div class="row">
+						<div class="row">
 							<div class="col-12 col-lg-7 col-xl-8 d-flex">
 							<div class="card radius-10 w-100">
 								<div class="card-header bg-transparent">
@@ -310,56 +349,9 @@
 									</div>
 								</div>
 							</div>
-							</div>
-				
-							<div class="col-12 col-lg-5 col-xl-4 d-flex">
-								<div class="card w-100 radius-10">
-								<div class="card-body">
-								<div class="card radius-10 border shadow-none">
-									<div class="card-body">
-										<div class="d-flex align-items-center">
-											<div>
-												<p class="mb-0 text-secondary">Total Likes</p>
-												<h4 class="my-1">45.6M</h4>
-												<p class="mb-0 font-13">+6.2% from last week</p>
-											</div>
-											<div class="widgets-icons-2 bg-gradient-cosmic text-white ms-auto"><i class='bx bxs-heart-circle'></i>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="card radius-10 border shadow-none">
-									<div class="card-body">
-										<div class="d-flex align-items-center">
-											<div>
-												<p class="mb-0 text-secondary">Comments</p>
-												<h4 class="my-1">25.6K</h4>
-												<p class="mb-0 font-13">+3.7% from last week</p>
-											</div>
-											<div class="widgets-icons-2 bg-gradient-ibiza text-white ms-auto"><i class='bx bxs-comment-detail'></i>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="card radius-10 mb-0 border shadow-none">
-									<div class="card-body">
-										<div class="d-flex align-items-center">
-											<div>
-												<p class="mb-0 text-secondary">Total Shares</p>
-												<h4 class="my-1">85.4M</h4>
-												<p class="mb-0 font-13">+4.6% from last week</p>
-											</div>
-											<div class="widgets-icons-2 bg-gradient-kyoto text-dark ms-auto"><i class='bx bxs-share-alt'></i>
-											</div>
-										</div>
-									</div>
-								</div>
-								</div>
-
-								</div>
-				
-							</div>
-						</div><!--end row-->
+						</div>-->
+							
+						
 
 						<!-- <div class="row row-cols-1 row-cols-lg-3">
 							<div class="col d-flex">
@@ -464,7 +456,7 @@
 										</div>
 									</div>
 							</div>
-						</div>
+						</div> -->
 
 				</div>
 			</div>
@@ -472,7 +464,7 @@
 
 
 
-			<div class="modal" id="SearchModal" tabindex="-1">
+			<!-- <div class="modal" id="SearchModal" tabindex="-1">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
 				<div class="modal-content">
 					<div class="modal-header gap-2">
@@ -516,84 +508,12 @@
 					</div>
 				</div>
 				</div>
-			</div>  -->
+			</div>   -->
 
 
 
 
-			<!-- <div class="overlay toggle-icon"></div> -->
-			<!--end overlay-->
-			<!-- Start Back To Top Button <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a> -->
-			<!--End Back To Top Button-->
-			<!-- <footer class="page-footer">
-				<p class="mb-0">Copyright © 2023. All right reserved.</p>
-			</footer>
-			</div> -->
-			<!--end wrapper-->
-			<!--start switcher-->
-			<!-- <div class="switcher-wrapper">
-				<div class="switcher-btn"> <i class='bx bx-cog bx-spin'></i>
-				</div>
-				<div class="switcher-body">
-					<div class="d-flex align-items-center">
-						<h5 class="mb-0 text-uppercase">Theme Customizer</h5>
-						<button type="button" class="btn-close ms-auto close-switcher" aria-label="Close"></button>
-					</div>
-					<hr/>
-					<h6 class="mb-0">Theme Styles</h6>
-					<hr/>
-					<div class="d-flex align-items-center justify-content-between">
-						<div class="form-check">
-							<input class="form-check-input" type="radio" name="flexRadioDefault" id="lightmode" checked>
-							<label class="form-check-label" for="lightmode">Light</label>
-						</div>
-						<div class="form-check">
-							<input class="form-check-input" type="radio" name="flexRadioDefault" id="darkmode">
-							<label class="form-check-label" for="darkmode">Dark</label>
-						</div>
-						<div class="form-check">
-							<input class="form-check-input" type="radio" name="flexRadioDefault" id="semidark">
-							<label class="form-check-label" for="semidark">Semi Dark</label>
-						</div>
-					</div>
-					<hr/>
-					<div class="form-check">
-						<input class="form-check-input" type="radio" id="minimaltheme" name="flexRadioDefault">
-						<label class="form-check-label" for="minimaltheme">Minimal Theme</label>
-					</div>
-					<hr/>
-					<h6 class="mb-0">Header Colors</h6>
-					<hr/>
-					<div class="header-colors-indigators">
-						<div class="row row-cols-auto g-3">
-							<div class="col">
-								<div class="indigator headercolor1" id="headercolor1"></div>
-							</div>
-							<div class="col">
-								<div class="indigator headercolor2" id="headercolor2"></div>
-							</div>
-							<div class="col">
-								<div class="indigator headercolor3" id="headercolor3"></div>
-							</div>
-							<div class="col">
-								<div class="indigator headercolor4" id="headercolor4"></div>
-							</div>
-							<div class="col">
-								<div class="indigator headercolor5" id="headercolor5"></div>
-							</div>
-							<div class="col">
-								<div class="indigator headercolor6" id="headercolor6"></div>
-							</div>
-							<div class="col">
-								<div class="indigator headercolor7" id="headercolor7"></div>
-							</div>
-							<div class="col">
-								<div class="indigator headercolor8" id="headercolor8"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div> -->
-			<!--end switcher-->
+			 
+			
 		{% endif %}	
 	{% endblock content %}

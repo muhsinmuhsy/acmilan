@@ -74,14 +74,17 @@ def dashbord(request):
 
     # Get a list of all users and their last login times
     users = User.objects.all().order_by('-last_login')[:10]
-
     user_logins = [(u.username, u.last_login.astimezone(timezone.get_current_timezone()) if u.last_login is not None else None) for u in users]
 
+     # get the latest 5 student added logs
+    added_students = StudentAddedLog.objects.order_by('-date_added')[:5]
+    added_student_details = [(log.student_name, log.date_added, log.added_by.username) for log in added_students]
     return render(request, 'dashbord.html', {
         'user_logins': user_logins,
         'student_count': student_count,
         'center_count': center_count,
         'coordinator_count': coordianator_count,
+        'added_students': added_student_details,
     })
 
 # ---------------------------------- Coordinators -----------------------------------------------------#
@@ -383,6 +386,49 @@ def student_list(request):
     return render(request, 'student_list.html' ,{'students':students})
 
 
+# @login_required 
+# def add_student(request, center_id):
+#     message = None
+#     center = Center.objects.get(pk=center_id)
+#     batches = center.batch_set.all()
+#     if request.method == 'POST':
+#         student = Student(
+#             ref_number=request.POST['ref_number'],
+#             full_name=request.POST['full_name'],
+#             city=request.POST['city'],
+#             zipcode=request.POST['zipcode'],
+#             email=request.POST['email'],
+#             date_of_birth=request.POST['date_of_birth'],
+#             preferred_location=request.POST['preferred_location'],
+#             street_address=request.POST['street_address'],
+#             state=request.POST['state'],
+#             phone_number=request.POST['phone_number'],
+#             guardian_name=request.POST['guardian_name'],
+#             guardian_phone_number=request.POST['guardian_phone_number'],
+#             id_proof=request.FILES.get('id_proof'),
+#             age_group=request.POST['age_group'],
+#             mode_of_travel=request.POST['mode_of_travel'],
+#             football_playing_position=request.POST['football_playing_position'],
+#             school_Name=request.POST['school_Name'],
+#             school_Address=request.POST['school_Address'],
+#             study_Standard=request.POST['study_Standard'],
+#             study_Devision=request.POST['study_Devision'],
+#             center=center,
+#             batch=Batch.objects.get(pk=request.POST['batch'])
+#         )
+#         try:
+#             student.save()
+#             center.num_students += 1
+#             center.save()
+            
+#             return redirect('center_student_list', center_id=center.id)
+#         except IntegrityError:
+#             message = f"A student with this reference number already exists."
+#     else:
+        
+#         student = Student()
+#     return render(request, 'add_student.html', {'student': student, 'center': center, 'batches': batches,'message':message})
+
 @login_required 
 def add_student(request, center_id):
     message = None
@@ -417,13 +463,21 @@ def add_student(request, center_id):
             student.save()
             center.num_students += 1
             center.save()
+            
+            # create and save student added log object
+            student_added_log = StudentAddedLog.objects.create(
+                added_by=request.user,
+                student_name=student.full_name,
+                date_added=timezone.now()
+            )
+            
             return redirect('center_student_list', center_id=center.id)
         except IntegrityError:
             message = f"A student with this reference number already exists."
     else:
-        
         student = Student()
-    return render(request, 'add_student.html', {'student': student, 'center': center, 'batches': batches,'message':message})
+    return render(request, 'add_student.html', {'student': student, 'center': center, 'batches': batches, 'message': message})
+
 
 # @login_required 
 # def edit_student(request, student_id):

@@ -143,3 +143,12 @@ class Payment(models.Model):
     date = models.DateField(null=True)
     amount = models.FloatField(null=True)
     description = models.TextField(null=True)
+
+
+class StudentAddedLog(models.Model):
+    added_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    student_name = models.CharField(max_length=255)
+    date_added = models.DateTimeField()
+
+    def __str__(self):
+        return f"{self.student_name} added by {self.added_by.username} on {self.date_added}"
