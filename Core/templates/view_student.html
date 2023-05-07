@@ -12,6 +12,7 @@
     border-collapse: collapse;
     width: 100%;
     text-align: left;
+    margin: 10px;
   }
   th, td {
     padding: 12px;
@@ -100,6 +101,10 @@
                           <li>City: {{ student.city }}</li>
                           <li>State: {{ student.state }}</li>
                           <li>Zip Code: {{ student.zipcode }}</li>
+                          {% if student.id_proof %}
+    <li>id proof : <a href="{{ student.id_proof.url }}" title="ID Proof" class="image-link"><img src="{{ student.id_proof.url }}" alt="id_proof" style="width: 30px;"></a></li>
+{% endif %}
+
                       </ul>
                       <hr>
                       <h5 class="card-title">Center Details</h5>
@@ -153,8 +158,8 @@
 
 
   
-
-    <button id="add-payment-btn" class="btn btn-primary">Add Payment</button>
+    <br>
+    <button id="add-payment-btn" class="btn btn-primary" style="margin: 10px;">Add Payment</button>
 
     <form id="add-payment-form" method="post" class="mt-3" style="display:none;">
         {% csrf_token %}
@@ -212,6 +217,16 @@
       addPaymentBtn.addEventListener('click', () => {
           addPaymentForm.style.display = addPaymentForm.style.display === 'none' ? 'block' : 'none';
       });
+    </script>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+
+    <script>
+    $(document).ready(function() {
+      $('.image-link').magnificPopup({type:'image'});
+    });
     </script>
 </body>
 

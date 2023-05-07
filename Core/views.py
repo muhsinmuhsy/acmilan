@@ -365,6 +365,12 @@ def lead_student(request):
             student.save()
             center.num_students += 1
             center.save()
+
+            student_added_log = StudentAddedLog.objects.create(
+                added_by=request.user,
+                student_name=student.full_name,
+                date_added=timezone.now()
+            )
             return redirect('center_student_list', center_id=center.id)
         except IntegrityError:
             message = f"A student with this reference number already exists."
